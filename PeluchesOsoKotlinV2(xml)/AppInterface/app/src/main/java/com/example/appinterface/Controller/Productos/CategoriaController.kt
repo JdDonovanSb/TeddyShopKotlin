@@ -1,54 +1,53 @@
 package Controller.Productos
 
 import Models.Productos.Categoria
-import java.util.*
+import Network.CategoriaApiService
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
 
 class CategoriaController {
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("http://10.0.2.2:3000/api/") // Emulador de Android para localhost
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
-    private val categorias = mutableMapOf<String, Categoria>()
+    private val api = retrofit.create(CategoriaApiService::class.java)
 
-    fun crearCategoria(nombre: String, descripcion: String): String {
-        val id = UUID.randomUUID().toString()  // Generar ID único
-        val categoria = Categoria(nombre, descripcion)
-        categorias[id] = categoria
-        return "Categoría creada con éxito."
+    fun listarCategorias(callback: (List<Categoria>?) -> Unit) {
+        api.listarCategorias().enqueue(object : Callback<List<Categoria>> {
+            override fun onResponse(call: Call<List<Categoria>>, response: Response<List<Categoria>>) {
+                if (response.isSuccessful) {
+                    callback(response.body())
+                } else {
+                    println("Error en listarCategorias: ${response.errorBody()?.string()}")
+                    callback(null)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Categoria>>, t: Throwable) {
+                println("Error de red en listarCategorias: ${t.message}")
+                callback(null)
+            }
+        })
     }
 
-    fun listarCategorias(): String {
-        if (categorias.isEmpty()) {
-            return "No hay categorías disponibles."
-        }
+    fun crearCategoria(nombre: String, descripcion: String, imagen: String?, productos: List<String>?, callback: (Boolean) -> Unit) {
+        val categoria = Categoria(id = null, nombre = nombre, descripcion = descripcion, imagen = imagen, productos = productos ?: emptyList())
 
-        return categorias.entries.joinToString("\n") {
-            "ID: ${it.key}, Nombre: ${it.value.getNombreCategoria()}, Descripción: ${it.value.getDescripcionCategoria()}"
-        }
-    }
+        api.crearCategoria(categoria).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    callback(true)
+                } else {
+                    println("Error en crearCategoria: ${response.errorBody()?.string()}")
+                    callback(false)
+                }
+            }
 
-    fun buscarCategoriaPorId(id: String): String {
-        val categoria = categorias[id]
-        return if (categoria != null) {
-            "Categoría encontrada: Nombre: ${categoria.getNombreCategoria()}, Descripción: ${categoria.getDescripcionCategoria()}"
-        } else {
-            "Categoría no encontrada."
-        }
-    }
-
-    fun actualizarCategoria(id: String, nuevoNombre: String, nuevaDescripcion: String): String {
-        val categoria = categorias[id]
-        return if (categoria != null) {
-            categoria.setNombreCategoria(nuevoNombre)
-            categoria.setDescripcionCategoria(nuevaDescripcion)
-            "Categoría actualizada con éxito."
-        } else {
-            "La categoría con ID: $id no se encontró."
-        }
-    }
-
-    fun eliminarCategoria(id: String): String {
-        return if (categorias.remove(id) != null) {
-            "Categoría eliminada con éxito."
-        } else {
-            "Categoría no encontrada."
-        }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                println("Error de red en crearCategoria: ${t.message}")
+                callback(false)
+            }
+        })
     }
 }

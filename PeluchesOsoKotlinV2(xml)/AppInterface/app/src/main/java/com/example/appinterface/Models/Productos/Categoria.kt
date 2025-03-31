@@ -1,20 +1,11 @@
 package Models.Productos
 
-class Categoria(private var nombreCategoria: String, private var descripcionCategoria: String) {
+import com.google.gson.annotations.SerializedName
 
-    fun getNombreCategoria(): String {
-        return nombreCategoria
-    }
-
-    fun getDescripcionCategoria(): String {
-        return descripcionCategoria
-    }
-
-    fun setNombreCategoria(nombreCategoria: String) {
-        this.nombreCategoria = nombreCategoria
-    }
-
-    fun setDescripcionCategoria(descripcionCategoria: String) {
-        this.descripcionCategoria = descripcionCategoria
-    }
-}
+data class Categoria(
+    @SerializedName("_id") val id: String? = null, // Puede ser nulo si creamos una nueva categoría
+    @SerializedName("nombreCategoria") var nombre: String,
+    @SerializedName("descripcionCategoria") var descripcion: String,
+    @SerializedName("imagen") var imagen: String? = null, // La API devuelve una imagen, puede ser opcional
+    @SerializedName("productos") var productos: List<String>? = emptyList() // Lista de productos opcional
+)
