@@ -234,6 +234,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="Actualizar"
+				android:onClick="actualizarCatalogo"
 				app:layout_constraintTop_toBottomOf="@id/switchDisponibilidad"
 				app:layout_constraintStart_toStartOf="parent"
 				android:layout_marginTop="16dp"/>

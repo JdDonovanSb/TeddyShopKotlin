@@ -8,14 +8,14 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class CatalogoController {
-    private val api = RetrofitClient.catalogoInstance
+    private val api = RetrofitClient.catalogoService
 
     fun crearCatalogo(nombre: String, descripcion: String, disponible: Boolean, estilo: String, callback: (Boolean) -> Unit) {
         val catalogo = Catalogo(
-            nombre = nombre,
-            descripcion = descripcion,
-            disponible = disponible,
-            estilo = estilo
+            nombreCatalogo = nombre,
+            descripcionCatalogo = descripcion,
+            disponibilidadCatalogo = disponible,
+            estiloCatalogo = estilo
         )
 
         api.crearCatalogo(catalogo).enqueue(object : Callback<Void> {
@@ -47,10 +47,10 @@ class CatalogoController {
 
     fun actualizarCatalogo(id: String, nombre: String, descripcion: String, disponible: Boolean, estilo: String, callback: (Boolean) -> Unit) {
         val catalogo = Catalogo(
-            nombre = nombre,
-            descripcion = descripcion,
-            disponible = disponible,
-            estilo = estilo
+            nombreCatalogo = nombre,
+            descripcionCatalogo = descripcion,
+            disponibilidadCatalogo = disponible,
+            estiloCatalogo = estilo
         )
 
         api.actualizarCatalogo(id, catalogo).enqueue(object : Callback<Void> {

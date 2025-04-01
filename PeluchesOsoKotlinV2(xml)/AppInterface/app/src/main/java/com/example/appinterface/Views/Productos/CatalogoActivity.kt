@@ -60,9 +60,9 @@ class CatalogoActivity : AppCompatActivity() {
 
                 catalogos?.forEach { catalogo ->
                     val row = TableRow(this).apply {
-                        addView(createCell(catalogo.nombre))
-                        addView(createCell(catalogo.descripcion))
-                        addView(createCell(if (catalogo.disponible) "Sí" else "No"))
+                        addView(createCell(catalogo.nombreCatalogo))
+                        addView(createCell(catalogo.descripcionCatalogo))
+                        addView(createCell(if (catalogo.disponibilidadCatalogo) "Sí" else "No"))
                         addView(crearBotonesAccion(catalogo))
                     }
                     table.addView(row)
@@ -99,10 +99,10 @@ class CatalogoActivity : AppCompatActivity() {
         catalogoSeleccionado = catalogo
         findViewById<ConstraintLayout>(R.id.layoutActualizarCatalogo).visibility = View.VISIBLE
 
-        findViewById<EditText>(R.id.editTextNombre).setText(catalogo.nombre)
-        findViewById<EditText>(R.id.editTextDescripcion).setText(catalogo.descripcion)
-        findViewById<EditText>(R.id.editTextEstilo).setText(catalogo.estilo)
-        findViewById<Switch>(R.id.switchDisponibilidad).isChecked = catalogo.disponible
+        findViewById<EditText>(R.id.editTextNombre).setText(catalogo.nombreCatalogo)
+        findViewById<EditText>(R.id.editTextDescripcion).setText(catalogo.descripcionCatalogo)
+        findViewById<EditText>(R.id.editTextEstilo).setText(catalogo.estiloCatalogo)
+        findViewById<Switch>(R.id.switchDisponibilidad).isChecked = catalogo.disponibilidadCatalogo
     }
 
     fun actualizarCatalogo(v: View) {
