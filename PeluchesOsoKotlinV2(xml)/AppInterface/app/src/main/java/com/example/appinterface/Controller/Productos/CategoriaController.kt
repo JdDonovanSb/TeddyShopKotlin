@@ -47,4 +47,30 @@ class CategoriaController {
             }
         })
     }
+
+    fun actualizarCategoria(id: String, nombre: String, descripcion: String, imagen: String?, callback: (Boolean) -> Unit) {
+        val categoria = Categoria( nombre = nombre, descripcion = descripcion, imagen = imagen)
+
+        api.actualizarCategoria(id, categoria).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
+    }
+
+    fun eliminarCategoria(id: String, callback: (Boolean) -> Unit) {
+        api.eliminarCategoria(id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
+    }
 }

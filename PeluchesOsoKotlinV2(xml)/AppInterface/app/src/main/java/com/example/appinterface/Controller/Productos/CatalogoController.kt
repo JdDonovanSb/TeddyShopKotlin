@@ -1,77 +1,78 @@
 package Controller.Productos
 
 import Models.Productos.Catalogo
-import Models.Productos.HistorialPrecio
-import java.util.*
-
-//import java.util.*
+import Network.CatalogoApiService
+import com.example.appinterface.Api.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CatalogoController {
-    private val catalogos = mutableMapOf<String, Catalogo>()
+    private val api = RetrofitClient.catalogoInstance
 
-    //Crear un nuevo catálogo
-    fun crearCatalogo(nombreCatalogo: String, descripcionCatalogo: String, disponibilidadCatalogo: Boolean, estiloCatalogo: String): String {
+    fun crearCatalogo(nombre: String, descripcion: String, disponible: Boolean, estilo: String, callback: (Boolean) -> Unit) {
+        val catalogo = Catalogo(
+            nombre = nombre,
+            descripcion = descripcion,
+            disponible = disponible,
+            estilo = estilo
+        )
 
-        val id = UUID.randomUUID().toString()  // Generar ID único
-        val catalogo = Catalogo(nombreCatalogo, descripcionCatalogo, disponibilidadCatalogo, estiloCatalogo)
-        catalogos[nombreCatalogo] = catalogo
-        return "Catalogo  creado con éxito."
-    }
-
-    //LIstar Catalogos
-    fun listarCatalogos(formatoTexto: Boolean = true): Any {
-        return if (formatoTexto) {
-            if (catalogos.isEmpty()) "No hay Catálogos disponibles."
-            else catalogos.values.joinToString("\n") {
-                "Nombre: ${it.getNombreCatalogo()}, Estilo: ${it.getEstiloCatalogo()}, Disponibilidad: ${it.getDisponibilidadCatalogo()}"
+        api.crearCatalogo(catalogo).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
             }
-        } else {
-            catalogos.values.toList()
-        }
-    }
-    //Buscar un Catalogo de precio por ID
-    fun buscarCatalogoPorId(id: String): String {
-        val catalogo =  catalogos[id]
-        return if (catalogo != null) {
-            " encontrado: Nombre: ${catalogo.getNombreCatalogo()}, Descripción de Catalogo: ${catalogo.getDescripcionCatalogo()}, Disponibilidad de Catalogo  : ${catalogo.getDisponibilidadCatalogo()}, Estilo del Catalogo : ${catalogo.getEstiloCatalogo()}"
-        } else {
-            "historial de precio no encontrado."
-        }
-    }
-    fun buscarCatalogoPorNombre(nombre: String): Catalogo? {
-        return catalogos[nombre]
-    }
-    fun actualizarCatalogo(
-        nombreActual: String,
-        nuevoNombre: String,
-        nuevaDescripcion: String,
-        nuevaDisponibilidad: Boolean,
-        nuevoEstilo: String
-    ): String {
-        val catalogo = catalogos[nombreActual] ?: return "Catálogo no encontrado"
 
-        // Actualizar campos
-        catalogo.apply {
-            setDescripcionCatalogo(nuevaDescripcion)
-            setDisponibilidadCatalogo(nuevaDisponibilidad)
-            setEstiloCatalogo(nuevoEstilo)
-        }
-
-        // Manejar cambio de nombre
-        if (nombreActual != nuevoNombre) {
-            catalogo.setNombreCatalogo(nuevoNombre)
-            catalogos.remove(nombreActual)
-            catalogos[nuevoNombre] = catalogo
-        }
-
-        return "Catálogo actualizado con éxito"
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
     }
 
-    fun eliminarCatalogo(nombreCatalogo: String): String {
-        return if (catalogos.remove(nombreCatalogo) != null) {
-            "Catalogo eliminado con éxito."
-        } else {
-            "Catalogo no encontrado."
-        }
+    fun listarCatalogos(callback: (List<Catalogo>?) -> Unit) {
+        api.listarCatalogos().enqueue(object : Callback<List<Catalogo>> {
+            override fun onResponse(call: Call<List<Catalogo>>, response: Response<List<Catalogo>>) {
+                if (response.isSuccessful) {
+                    callback(response.body())
+                } else {
+                    callback(null)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Catalogo>>, t: Throwable) {
+                callback(null)
+            }
+        })
+    }
+
+    fun actualizarCatalogo(id: String, nombre: String, descripcion: String, disponible: Boolean, estilo: String, callback: (Boolean) -> Unit) {
+        val catalogo = Catalogo(
+            nombre = nombre,
+            descripcion = descripcion,
+            disponible = disponible,
+            estilo = estilo
+        )
+
+        api.actualizarCatalogo(id, catalogo).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
+    }
+
+    fun eliminarCatalogo(id: String, callback: (Boolean) -> Unit) {
+        api.eliminarCatalogo(id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
     }
 }

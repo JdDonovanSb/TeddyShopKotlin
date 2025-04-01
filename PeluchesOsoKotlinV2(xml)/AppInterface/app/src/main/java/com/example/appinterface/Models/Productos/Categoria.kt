@@ -3,7 +3,7 @@ package Models.Productos
 import com.google.gson.annotations.SerializedName
 
 data class Categoria(
-    @SerializedName("_id") val id: String? = null, // Puede ser nulo si creamos una nueva categoría
+    @SerializedName("_id") val id: String? = null,
     @SerializedName("nombreCategoria") var nombre: String,
     @SerializedName("descripcionCategoria") var descripcion: String,
     @SerializedName("imagen") var imagen: String? = null, // La API devuelve una imagen, puede ser opcional

@@ -1,6 +1,7 @@
 package com.example.appinterface.Api
 
 import Network.CategoriaApiService
+import Network.CatalogoApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -13,5 +14,17 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(CategoriaApiService::class.java)
+
     }
+
+
+    val catalogoInstance: CatalogoApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(CatalogoApiService::class.java)
+
+    }
+
 }
