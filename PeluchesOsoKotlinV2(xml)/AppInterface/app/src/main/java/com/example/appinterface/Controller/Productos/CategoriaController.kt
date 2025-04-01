@@ -2,16 +2,13 @@ package Controller.Productos
 
 import Models.Productos.Categoria
 import Network.CategoriaApiService
+import com.example.appinterface.Api.RetrofitClient
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CategoriaController {
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("http://10.0.2.2:3000/api/") // Emulador de Android para localhost
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
 
-    private val api = retrofit.create(CategoriaApiService::class.java)
+    private val api = RetrofitClient.instance
 
     fun listarCategorias(callback: (List<Categoria>?) -> Unit) {
         api.listarCategorias().enqueue(object : Callback<List<Categoria>> {
