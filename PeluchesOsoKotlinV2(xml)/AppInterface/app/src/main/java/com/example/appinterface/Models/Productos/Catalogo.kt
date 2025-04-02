@@ -9,5 +9,6 @@ data class Catalogo(
     @SerializedName("disponibilidadCatalogo") var disponibilidadCatalogo: Boolean,
     @SerializedName("estiloCatalogo") var estiloCatalogo: String,
     @SerializedName("imagen") var imagen: String? = null,
-    @SerializedName("productos") var productos: List<String> = emptyList()
+    @SerializedName("productos") var productos: List<String>? = emptyList(),
+    //@SerializedName("companias") var companias: List<String>? = emptyList()
 )
