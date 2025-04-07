@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class CategoriaController {
 
-    private val api = RetrofitClient.instance
+    private val api = RetrofitClient.categoriaService
 
     fun listarCategorias(callback: (List<Categoria>?) -> Unit) {
         api.listarCategorias().enqueue(object : Callback<List<Categoria>> {

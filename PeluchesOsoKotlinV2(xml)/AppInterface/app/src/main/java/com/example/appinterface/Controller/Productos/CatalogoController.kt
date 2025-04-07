@@ -2,20 +2,25 @@ package Controller.Productos
 
 import Models.Productos.Catalogo
 import Network.CatalogoApiService
+import android.util.Log
 import com.example.appinterface.Api.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class CatalogoController {
-    private val api = RetrofitClient.catalogoInstance
+    private val api = RetrofitClient.catalogoService
 
-    fun crearCatalogo(nombre: String, descripcion: String, disponible: Boolean, estilo: String, callback: (Boolean) -> Unit) {
+    fun crearCatalogo( nombre: String, descripcion: String, disponible: Boolean, estilo: String, imagen : String?, productos: List<String>?, companias: List<String>?,  callback: (Boolean) -> Unit) {
         val catalogo = Catalogo(
-            nombre = nombre,
-            descripcion = descripcion,
-            disponible = disponible,
-            estilo = estilo
+            id = null,
+            nombreCatalogo = nombre,
+            descripcionCatalogo = descripcion,
+            disponibilidadCatalogo = disponible,
+            estiloCatalogo = estilo,
+            imagen = imagen,
+            productos = productos ?: emptyList(),
+            //companias = companias
         )
 
         api.crearCatalogo(catalogo).enqueue(object : Callback<Void> {
@@ -24,6 +29,30 @@ class CatalogoController {
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
+    }
+
+    fun actualizarCatalogo(id: String, nombre: String, descripcion: String, disponible: Boolean, estilo: String, callback: (Boolean) -> Unit) {
+        val catalogo = Catalogo(
+            nombreCatalogo = nombre,
+            descripcionCatalogo = descripcion,
+            disponibilidadCatalogo = disponible,
+            estiloCatalogo = estilo,
+        )
+
+        api.actualizarCatalogo(id, catalogo).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (!response.isSuccessful) {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("ACTUALIZAR_ERROR", "Código: ${response.code()} - Error: $errorBody")
+                }
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("ACTUALIZAR_FAILURE", "Error de red: ${t.message}")
                 callback(false)
             }
         })
@@ -45,24 +74,7 @@ class CatalogoController {
         })
     }
 
-    fun actualizarCatalogo(id: String, nombre: String, descripcion: String, disponible: Boolean, estilo: String, callback: (Boolean) -> Unit) {
-        val catalogo = Catalogo(
-            nombre = nombre,
-            descripcion = descripcion,
-            disponible = disponible,
-            estilo = estilo
-        )
 
-        api.actualizarCatalogo(id, catalogo).enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                callback(response.isSuccessful)
-            }
-
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                callback(false)
-            }
-        })
-    }
 
     fun eliminarCatalogo(id: String, callback: (Boolean) -> Unit) {
         api.eliminarCatalogo(id).enqueue(object : Callback<Void> {

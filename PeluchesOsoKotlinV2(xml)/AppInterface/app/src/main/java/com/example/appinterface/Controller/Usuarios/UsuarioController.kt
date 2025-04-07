@@ -1,7 +1,6 @@
 // UsuarioController.kt
 package Controller.Usuarios
 
-import Models.Productos.Categoria
 import Models.Usuarios.Usuario
 import com.example.appinterface.Api.RetrofitClient
 import retrofit2.Call
@@ -10,7 +9,7 @@ import retrofit2.Response
 
 class UsuarioController {
 
-    private val api = RetrofitClient.usuarioInstance
+    private val api = RetrofitClient.usuarioService
 
     fun listarUsuarios(callback: (List<Usuario>?) -> Unit) {
         api.listarUsuario().enqueue(object : Callback<List<Usuario>> {

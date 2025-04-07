@@ -30,23 +30,22 @@ class CatalogoActivity : AppCompatActivity() {
     }
 
     fun crearCatalogo(v: View) {
-        val nombre = findViewById<EditText>(R.id.nombreCatalogo).text.toString()
-        val descripcion = findViewById<EditText>(R.id.descripcionCatalogo).text.toString()
+        val nombre = findViewById<EditText>(R.id.nombreCatalogo).text.toString().trim()
+        val descripcion = findViewById<EditText>(R.id.descripcionCatalogo).text.toString().trim()
         val disponible = findViewById<Switch>(R.id.disponibilidadCatalogo).isChecked
-        val estilo = findViewById<EditText>(R.id.estiloCatalogo).text.toString()
+        val estilo = findViewById<EditText>(R.id.estiloCatalogo).text.toString().trim()
 
         if (nombre.isEmpty() || descripcion.isEmpty() || estilo.isEmpty()) {
             mostrarToast("Complete todos los campos")
             return
         }
 
-        catalogoController.crearCatalogo(nombre, descripcion, disponible, estilo) { success ->
+        catalogoController.crearCatalogo(nombre, descripcion, disponible, estilo, imagen = null, productos = null, companias = null ) { success ->
             runOnUiThread {
                 if (success) {
-                    mostrarToast("Catálogo creado")
-                    limpiarFormulario()
+                    Toast.makeText(this, "Catalogo creada con éxito", Toast.LENGTH_SHORT).show()
                 } else {
-                    mostrarToast("Error al crear")
+                    Toast.makeText(this, "Error al crear Catalogo", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -60,9 +59,8 @@ class CatalogoActivity : AppCompatActivity() {
 
                 catalogos?.forEach { catalogo ->
                     val row = TableRow(this).apply {
-                        addView(createCell(catalogo.nombre))
-                        addView(createCell(catalogo.descripcion))
-                        addView(createCell(if (catalogo.disponible) "Sí" else "No"))
+                        addView(createCell(catalogo.nombreCatalogo))
+                        addView(createCell(if (catalogo.disponibilidadCatalogo) "Sí" else "No"))
                         addView(crearBotonesAccion(catalogo))
                     }
                     table.addView(row)
@@ -92,6 +90,16 @@ class CatalogoActivity : AppCompatActivity() {
                 background = null
                 addView(this)
             }
+
+            // Botón Detalles
+            ImageButton(context).apply {
+                setImageResource(R.drawable.ic_baseline_info_24)
+                setOnClickListener { verDetalles(catalogo) }
+                background = null
+                addView(this)
+            }
+
+
         }
     }
 
@@ -99,10 +107,10 @@ class CatalogoActivity : AppCompatActivity() {
         catalogoSeleccionado = catalogo
         findViewById<ConstraintLayout>(R.id.layoutActualizarCatalogo).visibility = View.VISIBLE
 
-        findViewById<EditText>(R.id.editTextNombre).setText(catalogo.nombre)
-        findViewById<EditText>(R.id.editTextDescripcion).setText(catalogo.descripcion)
-        findViewById<EditText>(R.id.editTextEstilo).setText(catalogo.estilo)
-        findViewById<Switch>(R.id.switchDisponibilidad).isChecked = catalogo.disponible
+        findViewById<EditText>(R.id.editTextNombre).setText(catalogo.nombreCatalogo)
+        findViewById<EditText>(R.id.editTextDescripcion).setText(catalogo.descripcionCatalogo)
+        findViewById<EditText>(R.id.editTextEstilo).setText(catalogo.estiloCatalogo)
+        findViewById<Switch>(R.id.switchDisponibilidad).isChecked = catalogo.disponibilidadCatalogo
     }
 
     fun actualizarCatalogo(v: View) {
@@ -130,6 +138,7 @@ class CatalogoActivity : AppCompatActivity() {
                 }
             }
         }
+
     }
 
     private fun confirmarEliminacion(catalogo: Catalogo) {
@@ -151,6 +160,17 @@ class CatalogoActivity : AppCompatActivity() {
                 }
             }
             .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
+    private fun verDetalles(catalogo: Catalogo) {
+        AlertDialog.Builder(this)
+            .setTitle("Detalles del Catálogo")
+            .setMessage("""
+             Nombre: ${catalogo.nombreCatalogo}
+             Descripción: ${catalogo.descripcionCatalogo}
+         """.trimIndent())
+            .setPositiveButton("Cerrar", null)
             .show()
     }
 
