@@ -2,6 +2,7 @@ package com.example.appinterface.Api
 
 import Network.CategoriaApiService
 import Network.CatalogoApiService
+import com.example.appinterface.Api.Usuarios.UsuarioApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -25,6 +26,14 @@ object RetrofitClient {
             .build()
             .create(CatalogoApiService::class.java)
 
+    }
+
+    val usuarioInstance: UsuarioApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(UsuarioApiService::class.java)
     }
 
 }

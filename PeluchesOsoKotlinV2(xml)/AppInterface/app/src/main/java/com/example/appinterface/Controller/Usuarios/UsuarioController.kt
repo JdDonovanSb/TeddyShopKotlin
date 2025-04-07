@@ -1,57 +1,97 @@
+// UsuarioController.kt
 package Controller.Usuarios
+
+import Models.Productos.Categoria
 import Models.Usuarios.Usuario
-import java.util.*
+import com.example.appinterface.Api.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class UsuarioController {
 
-    private val usuarios = mutableMapOf<String, Usuario>()
+    private val api = RetrofitClient.usuarioInstance
 
-    fun crearUsuario(email: String, telefono: Int, contrasena: String, username: String): String {
-        val id = UUID.randomUUID().toString()
-        val usuario = Usuario(email, telefono, contrasena, username)
-        usuarios[id] = usuario
-        return "Usuario creado con éxito."
+    fun listarUsuarios(callback: (List<Usuario>?) -> Unit) {
+        api.listarUsuario().enqueue(object : Callback<List<Usuario>> {
+            override fun onResponse(call: Call<List<Usuario>>, response: Response<List<Usuario>>) {
+                if (response.isSuccessful) {
+                    callback(response.body())
+                } else {
+                    println("Error en listarUsuarios: ${response.errorBody()?.string()}")
+                    callback(null)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Usuario>>, t: Throwable) {
+                println("Error de red en listarUsuarios: ${t.message}")
+                callback(null)
+            }
+        })
+    }
+
+    fun crearUsuario(email: String, contrasena: String, username: String, callback: (Boolean) -> Unit) {
+        val usuario = Usuario(email = email, contrasena = contrasena, username = username)
+
+        println("Intentando crear usuario: $usuario")
+
+        api.crearUsuario(usuario).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    callback(true)
+                } else {
+                    val error = response.errorBody()?.string()
+                    println("Error al crear usuario (response): $error")
+                    callback(false)
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                println("Error de red al crear usuario: ${t.message}")
+                callback(false)
+            }
+        })
     }
 
 
-    fun listarUsuarios(): String {
-        if (usuarios.isEmpty()) {
-            return "No hay usuarios disponibles."
-        }
+    fun obtenerUsuarioPorId(id: String, callback: (Usuario?) -> Unit) {
+        api.obtenerUsuarioPorId(id).enqueue(object : Callback<Usuario> {
+            override fun onResponse(call: Call<Usuario>, response: Response<Usuario>) {
+                callback(response.body())
+            }
 
-        return usuarios.entries.joinToString("\n") {
-            "ID: ${it.key}, Email: ${it.value.getEmail()}, Teléfono: ${it.value.getTelefono()}, Usuario: ${it.value.getUsername()}"
-        }
+            override fun onFailure(call: Call<Usuario>, t: Throwable) {
+                println("Error de red en obtenerUsuarioPorId: ${t.message}")
+                callback(null)
+            }
+        })
     }
 
-    fun buscarUsuarioPorId(id: String): String {
-        val usuario = usuarios[id]
-        return if (usuario != null) {
-            "Usuario encontrado: Email: ${usuario.getEmail()}, Teléfono: ${usuario.getTelefono()}, Usuario: ${usuario.getUsername()}"
-        } else {
-            "Usuario no encontrado."
-        }
+    fun actualizarUsuario(id: String, email: String, contrasena: String, username: String, callback: (Boolean) -> Unit) {
+        val usuario = Usuario(email = email, contrasena = contrasena, username = username)
+
+        api.actualizarUsuario(id, usuario).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                println("Error de red en actualizarUsuario: ${t.message}")
+                callback(false)
+            }
+        })
     }
 
-    fun actualizarUsuario(id: String, email: String, telefono: Int, contrasena: String, username: String): String {
-        val usuario = usuarios[id]
-        if (usuario != null) {
-            usuario.setEmail(email)
-            usuario.setTelefono(telefono)
-            usuario.setContrasena(contrasena)
-            usuario.setUsername(username)
+    fun eliminarUsuario(id: String, callback: (Boolean) -> Unit) {
+        api.eliminarUsuario(id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
 
-            return "Usuario actualizado con éxito."
-        } else {
-            return "El usuario con ID: $id no se encontró."
-        }
-    }
-
-    fun eliminarUsuario(id: String): String {
-        return if (usuarios.remove(id) != null) {
-            "Usuario eliminado con éxito."
-        } else {
-            "Usuario no encontrado."
-        }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                println("Error de red en eliminarUsuario: ${t.message}")
+                callback(false)
+            }
+        })
     }
 }

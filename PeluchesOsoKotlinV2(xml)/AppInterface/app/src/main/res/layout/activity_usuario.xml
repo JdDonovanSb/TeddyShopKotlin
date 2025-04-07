@@ -27,12 +27,6 @@
 				android:hint="Email"
 				android:inputType="textEmailAddress"/>
 
-		<EditText
-				android:id="@+id/telefonoUsuario"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:hint="Teléfono"
-				android:inputType="phone"/>
 
 		<EditText
 				android:id="@+id/contrasenaUsuario"
@@ -115,12 +109,6 @@
 				android:hint="Nuevo Email"
 				android:inputType="textEmailAddress"/>
 
-		<EditText
-				android:id="@+id/telefonoUsuarioActualizar"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:hint="Nuevo Teléfono"
-				android:inputType="phone"/>
 
 		<EditText
 				android:id="@+id/contrasenaUsuarioActualizar"
