@@ -1,71 +1,94 @@
 package Controller.Usuarios
+
 import Models.Usuarios.Empleados
-import java.util.*
+
+import com.example.appinterface.Api.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import android.util.Log
 
 class EmpleadosController {
-    private val empleados = mutableMapOf<String, Empleados>()
+    private val api = RetrofitClient.empleadoService
 
-    //crear un empleado
-    fun crearEmpleado(dniEmpleado : Int,telefonoEmpleado : Int, nombreEmpleado : String ): String {
+    // Crear un empleado
+    fun crearEmpleado(dniEmpleado: Long, telefonoEmpleado: Long, nombreEmpleado: String, callback: (Boolean) -> Unit) {
+        val empleado = Empleados(
+            dniEmpleado = dniEmpleado,
+            telefonoEmpleado = telefonoEmpleado,
+            nombreEmpleado = nombreEmpleado)
 
-        val id = UUID.randomUUID().toString()  // Generar ID único
-        val empleado = Empleados(dniEmpleado,telefonoEmpleado,nombreEmpleado )
+        api.crearEmpleado(empleado).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
 
-        empleados[id] = empleado
-        return "El empleado fue creado con exito."
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
     }
 
-    //Listar los empleados
-    fun listarEmpleados(): String {
-        if(empleados.isEmpty()) {
-            return "No hay empleados disponibles."
-        }
+    fun listarEmpleados(callback: (List<Empleados>?) -> Unit) {
+        api.listarEmpleados().enqueue(object : Callback<List<Empleados>> {
+            override fun onResponse(call: Call<List<Empleados>>, response: Response<List<Empleados>>) {
+                if (response.isSuccessful) {
+                    callback(response.body())
+                } else {
+                    Log.e("LISTAR_EMPLEADOS", "Error en respuesta: ${response.code()} - ${response.message()}")
+                    callback(null)
+                }
+            }
 
-        return empleados.entries.joinToString("\n") {
-            "ID: ${it.key}, Dni: ${it.value.getDniEmpleado()}, Nombre del empleado: ${it.value.getNombreEmpleado()}, Telefono del empleado: ${it.value.getTelefonoEmpleado()}"
-        }
+            override fun onFailure(call: Call<List<Empleados>>, t: Throwable) {
+                Log.e("LISTAR_EMPLEADOS", "Error de red: ${t.message}")
+                callback(null)
+            }
+        })
     }
 
-    //Buscar un empleado por ID
-    fun buscarEmpleadoPorId(id: String): String {
-        val empleado = empleados[id]
-        return if (empleado != null) {
-            "Empleado encontrado: DNI: ${empleado.getDniEmpleado()}, Nombre: ${empleado.getNombreEmpleado()}, Telefono: ${empleado.getTelefonoEmpleado()}"
-        } else {
-            "EMpleado no encontrado."
-        }
+
+    // Buscar empleado por ID
+    fun obtenerEmpleadoPorId(id: String, callback: (Empleados?) -> Unit) {
+        api.obtenerEmpleadoPorId(id).enqueue(object : Callback<Empleados> {
+            override fun onResponse(call: Call<Empleados>, response: Response<Empleados>) {
+                callback(response.body())
+            }
+
+            override fun onFailure(call: Call<Empleados>, t: Throwable) {
+                callback(null)
+            }
+        })
     }
 
-    //Actualizar empleado por ID
-    fun actualizarEmpleado(id: String): String {
-        val empleado = empleados[id]
-        if (empleado != null) {
-            println("Ingrese el nuevo DNI del empleado (actual: ${empleado.getDniEmpleado()}) ")
-            val nuevoDniEmpleado = readln().toInt() ?: empleado.getDniEmpleado()
+    // Actualizar empleado
+    fun actualizarEmpleado(id: String, dniEmpleado: Long, telefonoEmpleado: Long, nombreEmpleado: String, callback: (Boolean) -> Unit) {
+        val empleado = Empleados(
+            dniEmpleado = dniEmpleado,
+            telefonoEmpleado = telefonoEmpleado,
+            nombreEmpleado = nombreEmpleado)
 
-            println("Ingrese el nuevo Nombre del empleado (actual: ${empleado.getNombreEmpleado()}) ")
-            val nuevoNombreEmpleado = readln() ?: empleado.getNombreEmpleado()
+        api.actualizarEmpleado(id, empleado).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
 
-            println("Ingrese el nuevo Telefono del empleado (actual: ${empleado.getTelefonoEmpleado()}) ")
-            val nuevoTelefonoEmpleado = readln().toInt() ?: empleado.getTelefonoEmpleado()
-
-            //Actualizar empleado
-            empleado.setNombreEmpleado(nuevoNombreEmpleado)
-            empleado.setTelefonoEmpleado(nuevoTelefonoEmpleado)
-            empleado.setDniEmpleado(nuevoDniEmpleado)
-
-            return "Empleado actualizado con exito."
-        } else {
-            return "El empleado con ID $id no fue encontrado."
-        }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
     }
 
-    //Eliminar un empleado por ID
-    fun eliminarEmpleado(id: String): String {
-        return if (empleados.remove(id) != null) {
-            "Empleado eliminado con exito."
-        } else {
-            "Empleado no encontrado."
-        }
+    // Eliminar empleado
+    fun eliminarEmpleado(id: String, callback: (Boolean) -> Unit) {
+        api.eliminarEmpleado(id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
     }
 }
