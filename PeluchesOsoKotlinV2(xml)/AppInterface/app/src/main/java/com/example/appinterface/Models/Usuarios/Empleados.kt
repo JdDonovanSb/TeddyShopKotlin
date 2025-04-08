@@ -1,36 +1,11 @@
 package Models.Usuarios
 
-class Empleados(private var DniEmpleado: Int, private var TelefonoEmpleado: Int, private var NombreEmpleado: String) {
+import com.google.gson.annotations.SerializedName
 
-    fun Empleados(dniEmpleado: Int, telefonoEmpleado: Int, nombreEmpleado: String){
-        this.DniEmpleado = dniEmpleado
-        this.TelefonoEmpleado = telefonoEmpleado
-        this.NombreEmpleado = nombreEmpleado
-    }
-
-    fun getDniEmpleado(): Int{
-        return DniEmpleado
-    }
-
-    fun getTelefonoEmpleado(): Int{
-        return TelefonoEmpleado
-    }
-
-
-    fun getNombreEmpleado(): String{
-        return NombreEmpleado
-    }
-
-    fun setDniEmpleado(dniEmpleado: Int) {
-        this.DniEmpleado = dniEmpleado
-    }
-
-    fun setTelefonoEmpleado(telefonoEmpleado: Int) {
-        this.TelefonoEmpleado = telefonoEmpleado
-    }
-
-    fun setNombreEmpleado(nombreEmpleado: String) {
-        this.NombreEmpleado = nombreEmpleado
-    }
-
-}
+data class Empleados(
+    @SerializedName("_id") val id: String? = null,
+    @SerializedName("dniEmpleado") var dniEmpleado: Long,
+    @SerializedName("telefonoEmpleado") var telefonoEmpleado: Long,
+    @SerializedName("nombreEmpleado") var nombreEmpleado: String
+    //@SerializedName("companias") var companias: List<String>? = emptyList()
+)

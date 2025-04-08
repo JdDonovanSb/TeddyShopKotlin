@@ -1,58 +1,82 @@
 package Controller.Pedidos
 
 import Models.Pedidos.DetalleFactura
-import java.util.*
+import com.example.appinterface.Api.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DetalleFacturaController {
 
-    private val detallesFactura = mutableMapOf<String, DetalleFactura>()
+    private val api = RetrofitClient.detalleFacturaService
 
-    // Crear un nuevo detalle de factura con número de factura
-    fun crearDetalleFactura(numFactura: Int, numDetalle: Int, precio: Double, cantidad: Int): String {
-        val id = UUID.randomUUID().toString()
-        val detalle = DetalleFactura(numFactura, numDetalle, precio, cantidad)
+    fun listarDetallesFactura(callback: (List<DetalleFactura>?) -> Unit) {
+        api.listarDetallesFactura().enqueue(object : Callback<List<DetalleFactura>> {
+            override fun onResponse(call: Call<List<DetalleFactura>>, response: Response<List<DetalleFactura>>) {
+                if (response.isSuccessful) {
+                    callback(response.body())
+                } else {
+                    println("Error en listarDetallesFactura: ${response.errorBody()?.string()}")
+                    callback(null)
+                }
+            }
 
-        detallesFactura[id] = detalle
-        return "Detalle de factura creado con éxito con el ID: $id"
+            override fun onFailure(call: Call<List<DetalleFactura>>, t: Throwable) {
+                println("Error de red en listarDetallesFactura: ${t.message}")
+                callback(null)
+            }
+        })
     }
 
-    // Listar todos los detalles de factura
-    fun listarDetallesFactura(): String {
-        if (detallesFactura.isEmpty()) {
-            return "No hay detalles de facturas disponibles."
-        }
-        return detallesFactura.entries.joinToString("\n") {
-            "ID: ${it.key}, Número Factura: ${it.value.getNumFactura()}, Número Detalle: ${it.value.getNumDetalle()}, Precio: ${it.value.getPrecioDetalleFactura()}, Cantidad: ${it.value.getCantidadDetallePedido()}"
-        }
+    fun crearDetalleFactura(numDetalle: Int, precio: Double, cantidad: Int, callback: (Boolean) -> Unit) {
+        val detalle = DetalleFactura(
+            numDetalle = numDetalle,
+            precioDetalleFactura = precio,
+            cantidadDetalleFactura = cantidad
+        )
+
+        api.crearDetalleFactura(detalle).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                println("Error de red en crearDetalleFactura: ${t.message}")
+                callback(false)
+            }
+        })
     }
 
-    // Buscar un detalle de factura por ID
-    fun buscarDetalleFacturaPorId(id: String): String {
-        val detalle = detallesFactura[id]
-        return if (detalle != null) {
-            "Detalle encontrado: Número Factura: ${detalle.getNumFactura()}, Número Detalle: ${detalle.getNumDetalle()}, Precio: ${detalle.getPrecioDetalleFactura()}, Cantidad: ${detalle.getCantidadDetallePedido()}"
-        } else {
-            "Detalle de factura no encontrado."
-        }
+
+    fun actualizarDetalleFactura(id: String, numDetalle: Int, precio: Double, cantidad: Int, callback: (Boolean) -> Unit) {
+        val detalle = DetalleFactura(
+            numDetalle = numDetalle,
+            precioDetalleFactura = precio,
+            cantidadDetalleFactura = cantidad
+        )
+
+        api.actualizarDetalleFactura(id, detalle).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                println("Error de red en actualizarDetalleFactura: ${t.message}")
+                callback(false)
+            }
+        })
     }
 
-    // Actualizar un detalle de factura por ID
-    fun actualizarDetalleFactura(id: String, nuevoPrecio: Double, nuevaCantidad: Int): String {
-        val detalle = detallesFactura[id]
-        return if (detalle != null) {
-            detallesFactura[id] = DetalleFactura(detalle.getNumFactura(), detalle.getNumDetalle(), nuevoPrecio, nuevaCantidad)
-            "Detalle de factura actualizado con éxito."
-        } else {
-            "El detalle de factura con ID: $id no se encontró."
-        }
-    }
+    fun eliminarDetalleFactura(id: String, callback: (Boolean) -> Unit) {
+        api.eliminarDetalleFactura(id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
 
-    // Eliminar un detalle de factura por ID
-    fun eliminarDetalleFactura(id: String): String {
-        return if (detallesFactura.remove(id) != null) {
-            "Detalle de factura eliminado con éxito."
-        } else {
-            "El detalle de factura con ID: $id no se encontró."
-        }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                println("Error de red en eliminarDetalleFactura: ${t.message}")
+                callback(false)
+            }
+        })
     }
 }
