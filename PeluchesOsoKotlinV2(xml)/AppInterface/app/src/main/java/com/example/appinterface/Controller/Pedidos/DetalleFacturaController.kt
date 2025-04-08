@@ -29,7 +29,12 @@ class DetalleFacturaController {
     }
 
     fun crearDetalleFactura(numDetalle: Int, precio: Double, cantidad: Int, callback: (Boolean) -> Unit) {
-        val detalle = DetalleFactura(numDetalle, precio, cantidad)
+        val detalle = DetalleFactura(
+            numDetalle = numDetalle,
+            precioDetalleFactura = precio,
+            cantidadDetalleFactura = cantidad
+        )
+
         api.crearDetalleFactura(detalle).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 callback(response.isSuccessful)
@@ -43,8 +48,13 @@ class DetalleFacturaController {
     }
 
 
-    fun actualizarDetalleFactura(id: String, precio: Double, cantidad: Int, callback: (Boolean) -> Unit) {
-        val detalle = DetalleFactura(0, precio, cantidad) // numFactura y numDetalle no se modifican
+    fun actualizarDetalleFactura(id: String, numDetalle: Int, precio: Double, cantidad: Int, callback: (Boolean) -> Unit) {
+        val detalle = DetalleFactura(
+            numDetalle = numDetalle,
+            precioDetalleFactura = precio,
+            cantidadDetalleFactura = cantidad
+        )
+
         api.actualizarDetalleFactura(id, detalle).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 callback(response.isSuccessful)

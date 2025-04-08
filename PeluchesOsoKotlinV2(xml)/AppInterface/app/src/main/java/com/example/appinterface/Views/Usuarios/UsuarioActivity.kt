@@ -1,60 +1,33 @@
 package com.example.appinterface.Views.Usuarios
 
 import Controller.Usuarios.UsuarioController
+import Models.Usuarios.Usuario
+import android.app.AlertDialog
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.appinterface.R
-import kotlin.collections.isNotEmpty
-import kotlin.collections.joinToString
-import android.widget.Toast
 
 class UsuarioActivity : AppCompatActivity() {
-
     private val usuarioController = UsuarioController()
+    private var usuarioSeleccionado: Usuario? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usuario)
     }
 
-    // Función que muestra el formulario de crear usuario
-    fun mostrarFormulario(v: View) {
-        val formulario = findViewById<LinearLayout>(R.id.contenedorFormulario)
-        if (formulario.visibility == View.GONE) {
-            formulario.visibility = View.VISIBLE
-        } else {
-            formulario.visibility = View.GONE
+    private fun createCell(text: String): TextView {
+        return TextView(this).apply {
+            this.text = text
+            setPadding(16, 8, 16, 8)
+            gravity = Gravity.CENTER
+            layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
         }
     }
-    fun mostrarFormularioBuscar(v: View) {
-        val formulario = findViewById<LinearLayout>(R.id.contenedorFormularioBuscar)
-        if (formulario.visibility == View.GONE) {
-            formulario.visibility = View.VISIBLE
-        } else {
-            formulario.visibility = View.GONE
-        }
-    }
-    fun mostrarFormularioActualizar(v: View) {
-        val formularioActualizar = findViewById<LinearLayout>(R.id.contenedorFormularioActualizar)
-        formularioActualizar.visibility = if (formularioActualizar.visibility == View.VISIBLE) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
-    fun mostrarFormularioEliminar(v: View) {
-        val formularioEliminar = findViewById<LinearLayout>(R.id.contenedorFormularioEliminar)
-        formularioEliminar.visibility = if (formularioEliminar.visibility == View.VISIBLE) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
-
 
     fun crearUsuario(v: View) {
         val email = findViewById<EditText>(R.id.emailUsuario).text.toString().trim()
@@ -62,13 +35,18 @@ class UsuarioActivity : AppCompatActivity() {
         val username = findViewById<EditText>(R.id.usernameUsuario).text.toString().trim()
 
         if (email.isEmpty() || contrasena.isEmpty() || username.isEmpty()) {
-            Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show()
+            mostrarToast("Complete todos los campos")
             return
         }
 
         usuarioController.crearUsuario(email, contrasena, username) { success ->
             runOnUiThread {
-                Toast.makeText(this, if (success) "Usuario creado con éxito" else "Error al crear usuario", Toast.LENGTH_SHORT).show()
+                if (success) {
+                    mostrarToast("Usuario creado con éxito")
+                    limpiarFormulario()
+                } else {
+                    mostrarToast("Error al crear usuario")
+                }
             }
         }
     }
@@ -76,70 +54,128 @@ class UsuarioActivity : AppCompatActivity() {
     fun listarUsuarios(v: View) {
         usuarioController.listarUsuarios { usuarios ->
             runOnUiThread {
-                val textView = findViewById<TextView>(R.id.textViewUsuarios)
-                if (usuarios != null && usuarios.isNotEmpty()) {
-                    textView.text = usuarios.joinToString("\n") {
-                        "Email: ${it.email}\nContraseña: ${it.contrasena}\nUsername: ${it.username}\n"
+                val table = findViewById<TableLayout>(R.id.tableUsuarios)
+                table.removeViews(1, table.childCount - 1)
+
+                usuarios?.forEach { usuario ->
+                    val row = TableRow(this).apply {
+                        addView(createCell(usuario.username))
+                        addView(createCell(usuario.email))
+                        addView(crearBotonesAccion(usuario))
                     }
-                } else {
-                    textView.text = "No hay usuarios disponibles"
-                }
+                    table.addView(row)
+                } ?: mostrarToast("Error al cargar usuarios")
             }
         }
     }
 
-    fun buscarUsuario(v: View) {
-        val id = findViewById<EditText>(R.id.idUsuario).text.toString().trim()
+    private fun crearBotonesAccion(usuario: Usuario): LinearLayout {
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1.5f)
+            gravity = Gravity.CENTER
 
-        if (id.isEmpty()) {
-            Toast.makeText(this, "ID no puede estar vacío", Toast.LENGTH_SHORT).show()
-            return
-        }
+            // Botón Editar
+            ImageButton(context).apply {
+                setImageResource(R.drawable.ic_baseline_edit_24)
+                setOnClickListener { mostrarFormularioEdicion(usuario) }
+                background = null
+                addView(this)
+            }
 
-        usuarioController.obtenerUsuarioPorId(id) { usuario ->
-            runOnUiThread {
-                val textView = findViewById<TextView>(R.id.textViewUsuarios)
-                if (usuario != null) {
-                    textView.text = "Email: ${usuario.email}\nContraseña: ${usuario.contrasena}\nUsername: ${usuario.username}"
-                } else {
-                    textView.text = "Usuario no encontrado"
-                }
+            // Botón Eliminar
+            ImageButton(context).apply {
+                setImageResource(R.drawable.ic_baseline_delete_24)
+                setOnClickListener { confirmarEliminacion(usuario) }
+                background = null
+                addView(this)
+            }
+
+            // Botón Detalles
+            ImageButton(context).apply {
+                setImageResource(R.drawable.ic_baseline_info_24)
+                setOnClickListener { verDetalles(usuario) }
+                background = null
+                addView(this)
             }
         }
+    }
+
+    private fun mostrarFormularioEdicion(usuario: Usuario) {
+        usuarioSeleccionado = usuario
+        findViewById<ConstraintLayout>(R.id.layoutActualizarUsuario).visibility = View.VISIBLE
+
+        findViewById<EditText>(R.id.editTextEmail).setText(usuario.email)
+        findViewById<EditText>(R.id.editTextUsername).setText(usuario.username)
+        findViewById<EditText>(R.id.editTextContrasena).setText(usuario.contrasena)
     }
 
     fun actualizarUsuario(v: View) {
-        val id = findViewById<EditText>(R.id.idUsuarioActualizar).text.toString().trim()
-        val email = findViewById<EditText>(R.id.emailUsuarioActualizar).text.toString().trim()
-        val contrasena = findViewById<EditText>(R.id.contrasenaUsuarioActualizar).text.toString().trim()
-        val username = findViewById<EditText>(R.id.usernameUsuarioActualizar).text.toString().trim()
+        usuarioSeleccionado?.let { usuario ->
+            val nuevoEmail = findViewById<EditText>(R.id.editTextEmail).text.toString()
+            val nuevoUsername = findViewById<EditText>(R.id.editTextUsername).text.toString()
+            val nuevaContrasena = findViewById<EditText>(R.id.editTextContrasena).text.toString()
 
-
-        if (id.isEmpty() || email.isEmpty() || contrasena.isEmpty() || username.isEmpty()) {
-            Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        usuarioController.actualizarUsuario(id, email, contrasena, username) { success ->
-            runOnUiThread {
-                Toast.makeText(this, if (success) "Usuario actualizado correctamente" else "Error al actualizar", Toast.LENGTH_SHORT).show()
+            usuarioController.actualizarUsuario(
+                usuario.id ?: return,
+                nuevoEmail,
+                nuevaContrasena,
+                nuevoUsername
+            ) { success ->
+                runOnUiThread {
+                    if (success) {
+                        mostrarToast("Actualizado correctamente")
+                        findViewById<ConstraintLayout>(R.id.layoutActualizarUsuario).visibility = View.GONE
+                        listarUsuarios(findViewById(R.id.listarUsuarios))
+                    } else {
+                        mostrarToast("Error al actualizar")
+                    }
+                }
             }
         }
     }
 
-    fun eliminarUsuario(v: View) {
-        val id = findViewById<EditText>(R.id.idUsuarioEliminar).text.toString().trim()
-
-        if (id.isEmpty()) {
-            Toast.makeText(this, "Debes ingresar un ID", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        usuarioController.eliminarUsuario(id) { success ->
-            runOnUiThread {
-                Toast.makeText(this, if (success) "Usuario eliminado correctamente" else "Error al eliminar", Toast.LENGTH_SHORT).show()
+    private fun confirmarEliminacion(usuario: Usuario) {
+        AlertDialog.Builder(this)
+            .setTitle("Eliminar usuario")
+            .setMessage("¿Confirmar eliminación?")
+            .setPositiveButton("Eliminar") { _, _ ->
+                usuario.id?.let { id ->
+                    usuarioController.eliminarUsuario(id) { success ->
+                        runOnUiThread {
+                            if (success) {
+                                mostrarToast("Eliminado")
+                                listarUsuarios(findViewById(R.id.listarUsuarios))
+                            } else {
+                                mostrarToast("Error al eliminar")
+                            }
+                        }
+                    }
+                }
             }
-        }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 
+    private fun verDetalles(usuario: Usuario) {
+        AlertDialog.Builder(this)
+            .setTitle("Detalles del Usuario")
+            .setMessage("""
+                Username: ${usuario.username}
+                Email: ${usuario.email}
+                Contraseña: ${usuario.contrasena}
+            """.trimIndent())
+            .setPositiveButton("Cerrar", null)
+            .show()
+    }
+
+    private fun limpiarFormulario() {
+        findViewById<EditText>(R.id.emailUsuario).text.clear()
+        findViewById<EditText>(R.id.contrasenaUsuario).text.clear()
+        findViewById<EditText>(R.id.usernameUsuario).text.clear()
+    }
+
+    private fun mostrarToast(mensaje: String) {
+        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
+    }
 }
