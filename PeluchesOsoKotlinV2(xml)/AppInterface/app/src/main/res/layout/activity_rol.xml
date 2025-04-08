@@ -9,77 +9,189 @@
 		tools:context=".Views.Usuarios.RolesActivity">
 
 	<TextView
-			android:id="@+id/textViewTituloRol"
+			android:id="@+id/textViewTitulo"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="Formulario Roles"
 			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintHorizontal_bias="0.498" app:layout_constraintVertical_bias="0.008"/>
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintVertical_bias="0.008"
+			app:layout_constraintBottom_toBottomOf="parent"/>
 
 	<EditText
 			android:id="@+id/nombreRol"
-			android:layout_width="411dp"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:hint="Nombre"
+			android:hint="Nombre del rol"
 			android:inputType="text"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintVertical_bias="0.055"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintHorizontal_bias="0.0"
-			android:minHeight="48dp"/>
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintVertical_bias="0.056"/>
 
-	<Button
-			android:id="@+id/crearRol"
-			android:text="Crear rol"
+	<!-- DataTable para mostrar los elementos -->
+	<Switch
+			android:id="@+id/estadoRol"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:onClick="crearRol"
+			android:text="Estado"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintHorizontal_bias="0.794"
-			app:layout_constraintVertical_bias="0.231"/>
-
+			app:layout_constraintVertical_bias="0.144" app:layout_constraintHorizontal_bias="0.018"/>
+	<Button
+			android:id="@+id/crearRol"
+			android:text="Crear"
+			android:layout_width="85dp"
+			android:layout_height="44dp"
+			android:onClick="crearRol"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintHorizontal_bias="0.033"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintVertical_bias="0.218"/>
+	<Button
+			android:id="@+id/listarRoles"
+			android:text="Listar"
+			android:layout_width="90dp"
+			android:layout_height="44dp"
+			android:onClick="listarRoles"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintHorizontal_bias="0.327"
+			app:layout_constraintVertical_bias="0.218"/>
 	<TextView
 			android:id="@+id/textViewListado"
 			android:text="Visualización de los Roles"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_marginTop="8dp"
 			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintHorizontal_bias="0.459"
-			app:layout_constraintVertical_bias="0.331"/>
+			app:layout_constraintVertical_bias="0.288"
+			app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.421"/>
+	<ScrollView
+			android:layout_width="0dp"
+			android:layout_height="0dp"
+			app:layout_constraintTop_toBottomOf="@id/textViewListado"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			android:fillViewport="true" app:layout_constraintHorizontal_bias="1.0"
+			app:layout_constraintVertical_bias="1.0">
 
-	<Button
-			android:id="@+id/ListarRoles"
-			android:text="Listar Roles"
-			android:layout_width="wrap_content"
+		<TableLayout
+				android:id="@+id/tableRoles"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:stretchColumns="*"
+				android:padding="8dp">
+
+			<TableRow
+					android:layout_width="wrap_content"
+					android:layout_height="54dp"
+					android:background="#DDDDDD">
+
+				<TextView
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight="1"
+						android:text="Nombre"
+						android:padding="8dp"
+						android:textStyle="bold"/>
+
+				<TextView
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight="1"
+						android:text="Estado"
+						android:padding="8dp"
+						android:textStyle="bold"/>
+
+				<TextView
+						android:layout_width="0dp"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.5"
+						android:text="Acciones"
+						android:padding="8dp"
+						android:textStyle="bold"/>
+			</TableRow>
+		</TableLayout>
+	</ScrollView>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+			android:id="@+id/layoutActualizarRol"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:onClick="listarRoles"
-
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintHorizontal_bias="0.061"
+			android:padding="16dp"
+			android:visibility="gone"
 			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintVertical_bias="0.232"/>
-
-	<Switch
-			android:text="estado"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/estadoRol"
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintVertical_bias="0.153"
-			android:minHeight="48dp"/>
+			android:background="@android:color/white">
+
+		<TextView
+				android:id="@+id/textViewTituloDialog"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Actualizar Rol"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent" />
+
+		<EditText
+				android:id="@+id/editTextNombreRol"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:hint="Nmobre del Rol"
+				android:inputType="text"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/textViewTituloDialog"
+				android:layout_marginTop="8dp"/>
+
+		<EditText
+				android:id="@+id/editTextEstado"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:hint="Estado del Rol"
+				android:inputType="text"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/textViewTituloDialog"
+				android:layout_marginTop="8dp"/>
+
+
+		<Button
+				android:id="@+id/btnActualizarRol"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Actualizar"
+				android:onClick="actualizarRol"
+				app:layout_constraintTop_toBottomOf="@id/editTextEstado"
+				app:layout_constraintStart_toStartOf="parent"
+				android:layout_marginTop="16dp"/>
+
+		<Button
+				android:id="@+id/btnCancelarRol"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Cancelar"
+				app:layout_constraintTop_toBottomOf="@id/editTextEstado"
+				app:layout_constraintEnd_toEndOf="parent"
+				android:layout_marginTop="16dp"/>
+	</androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
