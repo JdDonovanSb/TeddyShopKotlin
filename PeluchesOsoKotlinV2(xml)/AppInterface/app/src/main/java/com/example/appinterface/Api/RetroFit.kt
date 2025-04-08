@@ -3,6 +3,7 @@ package com.example.appinterface.Api
 import Network.CategoriaApiService
 import Network.CatalogoApiService
 import com.example.appinterface.Api.Pedidos.DetalleFacturaApiService
+import com.example.appinterface.Api.Usuarios.EmpleadoApiService
 import com.example.appinterface.Api.Usuarios.UsuarioApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,4 +28,9 @@ object RetrofitClient {
 
     val detalleFacturaService: DetalleFacturaApiService
         get() = retrofit.create(DetalleFacturaApiService::class.java)
+
+    val empleadoService: EmpleadoApiService
+        get() = retrofit.create(EmpleadoApiService::class.java)
+
+
 }
