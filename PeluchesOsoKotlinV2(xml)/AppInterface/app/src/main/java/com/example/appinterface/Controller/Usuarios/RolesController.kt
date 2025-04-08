@@ -2,68 +2,96 @@ package Controller.Usuarios
 
 import Models.Productos.Producto
 import Models.Usuarios.Roles
+import android.util.Log
+import com.example.appinterface.Api.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class RolesController {
 
-    private val roles = mutableMapOf<String, Roles>()
+    private val api = RetrofitClient.rolesService
 
-    //Crear un rol
-    fun crearRol(estado: Boolean, nombre: String): String{
-        val id = UUID.randomUUID().toString()  // Generar ID único
-        val rol = Roles(estado, nombre)
-        roles[id] = rol
-        return "Rol creado con éxito."
+    fun crearRol(estado: Boolean, nombre: String, usuarios: List<String>?, callback: (Boolean) -> Unit) {
+        val roles = Roles(
+            estado = estado,
+            nombre = nombre,
+            usuarios = usuarios ?: emptyList()
+        )
+
+        api.crearRoles(roles).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
     }
 
-    // Listar todos los Roles
-    fun listarRoles(): String {
-        if (roles.isEmpty()) {
-            return "No hay roles disponibles."
-        }
 
-        return roles.entries.joinToString("\n") {
-            "ID: ${it.key}, Estado del rol: ${it.value.getEstado()}, Nombre del rol : ${it.value.getNombre()}"
-        }
+    fun listarRoles(callback: (List<Roles>?) -> Unit) {
+        api.listarRoles().enqueue(object : Callback<List<Roles>> {
+            override fun onResponse(call: Call<List<Roles>>, response: Response<List<Roles>>) {
+                if(response.isSuccessful) {
+                    callback(response.body())
+                } else {
+                    callback(null)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Roles>>, t: Throwable) {
+                callback(null)
+            }
+        })
     }
 
     // Buscar un Rol por ID
-    fun buscarRolPorId(id: String): String {
-        val rol = roles[id]
-        return if (rol != null) {
-            "Rol encontrado: Estado del rol: ${rol.getEstado()}, Nombre del rol: ${rol.getNombre()}"
-        } else {
-            "Rol no encontrado."
-        }
+    //fun buscarRolPorId(id: String): String {
+    //    val rol = roles[id]
+    //    return if (rol != null) {
+    //        "Rol encontrado: Estado del rol: ${rol.getEstado()}, Nombre del rol: ${rol.getNombre()}"
+    //    } else {
+    //        "Rol no encontrado."
+    //    }
+    //}
+
+
+
+    fun actualizarRol(id: String, estado: Boolean, nombre: String, callback: (Boolean) -> Unit) {
+        val roles = Roles(
+            estado = estado,
+            nombre = nombre
+        )
+
+        api.actualizarRoles(id, roles).enqueue((object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if(!response.isSuccessful) {
+                    val errorBody = response.errorBody()?.toString()
+                    Log.e("ACTUALIZAR_ERROR", "Código: ${response.code()} - Error: $errorBody")
+                }
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("ACTUALIZAR_FAILURE", "Error de red: ${t.message}")
+                callback(false)
+            }
+        }))
     }
 
-    // Actualizar un Rol por ID
-    fun actualizarRol(id: String): String {
-        val rol = roles[id]
-        if (rol != null) {
+    fun eliminarRol(id: String, callback: (Boolean) -> Unit) {
+        api.eliminarRoles(id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
 
-            println("Ingresa el nuevo nombre del rol (actual: ${rol.getNombre()}):")
-            val nuevoNombre = readLine() ?: rol.getNombre()
-
-            println("¿Está disponible el Rol? (true/false, actual: ${rol.getEstado()}):")
-            val nuevaDisponibilidad = readLine()?.toBoolean() ?: rol.getEstado()
-
-            // Actualizar Rol
-
-            rol.setNombre(nuevoNombre)
-            rol.setEstado(nuevaDisponibilidad)
-            return "Rol actualizado con éxito."
-        } else {
-            return "Rol con ID $id no encontrado."
-        }
-    }
-
-    fun eliminarRol(id: String): String {
-        return if (roles.remove(id) != null) {
-            "Rol eliminado con éxito."
-        } else {
-            "Rol no encontrado."
-        }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
     }
 
 

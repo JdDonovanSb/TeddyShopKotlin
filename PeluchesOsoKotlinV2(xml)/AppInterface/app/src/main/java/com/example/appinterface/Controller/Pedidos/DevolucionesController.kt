@@ -1,57 +1,98 @@
 package Controller.Pedidos
 import Models.Pedidos.Devoluciones
-import java.util.*
+import Models.Productos.Catalogo
+import android.icu.text.DateFormat
+import android.util.Log
+import com.example.appinterface.Api.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DevolucionesController {
 
-    private val devoluciones = mutableMapOf<String, Devoluciones>()
+    private val api = RetrofitClient.devolucionesService
 
-    // Crear una nueva devolucion
-    fun crearDevolucion(detalleDevolucion: String): String {
-        val id = UUID.randomUUID().toString()
-        val devolucion = Devoluciones(detalleDevolucion)
+    fun crearDevolucion(numDevolucion: String, detalleDevolucion: String, fechaDevolucion: String, productos: List<String>?, callback: (Boolean) -> Unit) {
+        val devolucion = Devoluciones(
+            numDevolucion = numDevolucion,
+            detalleDevolucion = detalleDevolucion,
+            fechaDevolucion = fechaDevolucion,
+            productos = productos ?: emptyList()
+        )
 
-        devoluciones[id] = devolucion
-        return "Devolución creada con éxito con el ID: $id"
+        api.crearDevoluciones(devolucion).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
     }
 
-    // Listar todas las devoluciones
-    fun listarDevoluciones(): String {
-        if (devoluciones.isEmpty()) {
-            return "No hay devoluciones registradas"
-        }
-        return devoluciones.entries.joinToString("\n") {
-            "ID: ${it.key}, Detalles de la Devolución: ${it.value.getDetalleDevolucion()}"
-        }
+
+    fun listarDevoluciones(callback: (List<Devoluciones>?) -> Unit) {
+        api.listartDevoluciones().enqueue(object : Callback<List<Devoluciones>> {
+            override fun onResponse(call: Call<List<Devoluciones>>, response: Response<List<Devoluciones>>) {
+                if (response.isSuccessful) {
+                    callback(response.body())
+                } else {
+                    callback(null)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Devoluciones>>, t: Throwable) {
+                callback(null)
+            }
+        })
     }
 
-    // Buscar una devolucion por ID
-    fun buscarDevolucionPorId(id: String): String {
-        val devolucion = devoluciones[id]
-        return if (devolucion != null) {
-            "Devolución encontrada: Detalles de la Devolución: ${devolucion.getDetalleDevolucion()}"
-        } else {
-            "Devolución no encontrada."
-        }
+
+    //fun buscarDevolucionPorId(id: String): String {
+    //    val devolucion = devoluciones[id]
+    //    return if (devolucion != null) {
+    //        "Devolución encontrada: Detalles de la Devolución: ${devolucion.getDetalleDevolucion()}"
+    //    } else {
+    //        "Devolución no encontrada."
+    //    }
+    //}
+
+
+    fun actualizarDevolucion(id: String, numDevolucion: String ,detalleDevolucion: String, fechaDevolucion: String, callback: (Boolean) -> Unit) {
+        val devolucion = Devoluciones(
+            numDevolucion = numDevolucion,
+            detalleDevolucion = detalleDevolucion,
+            fechaDevolucion = fechaDevolucion
+        )
+
+        api.actualizarDevoluciones(id, devolucion).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if(!response.isSuccessful) {
+                    val errorBody = response.errorBody()?.toString()
+                    Log.e("ACTUALIZAR_ERROR", "Código: ${response.code()} - Error: $errorBody")
+                }
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("ACTUALIZAR_FAILURE", "Error de red: ${t.message}")
+                callback(false)
+            }
+        })
+
     }
 
-    // Actualizar una devolucion por ID
-    fun actualizarDevolucion(id: String, nuevoDetalleDevolucion: String): String {
-        val devolucion = devoluciones[id]
-        return if (devolucion != null) {
-            devolucion.setDetalleDevolucion(nuevoDetalleDevolucion)
-            "Detalles de la devolucion actualizados con éxito."
-        } else {
-            "La devolución con ID: $id no se encontró."
-        }
-    }
 
-    // Eliminar una devolucion por ID
-    fun eliminarDevolucion(id: String): String {
-        return if (devoluciones.remove(id) != null) {
-            "Devolución eliminada con éxito."
-        } else {
-            "La devolución con ID: $id no se encontró."
-        }
+    fun eliminarDevolucion(id: String, callback: (Boolean) -> Unit) {
+        api.eliminarDevoluciones(id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
     }
 }

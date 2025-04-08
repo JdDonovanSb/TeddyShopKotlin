@@ -32,5 +32,12 @@ object RetrofitClient {
     val empleadoService: EmpleadoApiService
         get() = retrofit.create(EmpleadoApiService::class.java)
 
+    val devolucionesService: DevolucionesApiService
+        get() = retrofit.create(DevolucionesApiService::class.java)
 
+    val rolesService: RolesApiService
+        get() = retrofit.create(RolesApiService::class.java)
 }
+
+
+
