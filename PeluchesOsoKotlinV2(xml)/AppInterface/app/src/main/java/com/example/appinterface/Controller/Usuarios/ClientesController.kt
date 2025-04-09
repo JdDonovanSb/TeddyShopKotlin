@@ -1,7 +1,7 @@
 package Controller.Usuarios
 
 import Models.Usuarios.Clientes
-import Network.ClientesApiService
+import com.example.appinterface.Api.ClientesApiService
 import com.example.appinterface.Api.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback

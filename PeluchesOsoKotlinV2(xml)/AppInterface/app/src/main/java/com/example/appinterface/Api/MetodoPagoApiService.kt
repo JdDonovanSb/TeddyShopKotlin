@@ -1,5 +1,4 @@
-package Network
-
+package com.example.appinterface.Api
 import Models.Pedidos.MetodoPago
 import retrofit2.Call
 import retrofit2.http.*
