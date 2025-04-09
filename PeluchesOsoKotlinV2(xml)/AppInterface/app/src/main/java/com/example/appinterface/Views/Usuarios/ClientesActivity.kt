@@ -1,5 +1,6 @@
 package com.example.appinterface.Views.Usuarios
 
+import Controller.Usuarios.ClientesController
 import Models.Usuarios.Clientes
 import android.app.AlertDialog
 import android.os.Bundle
@@ -8,7 +9,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.appinterface.R
-import controller.usuarios.ClientesController
+
 
 class ClientesActivity : AppCompatActivity() {
 

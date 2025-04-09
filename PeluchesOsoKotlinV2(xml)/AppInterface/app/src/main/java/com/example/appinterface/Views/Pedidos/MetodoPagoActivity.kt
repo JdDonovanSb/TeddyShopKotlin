@@ -124,7 +124,7 @@ class MetodoPagoActivity : AppCompatActivity() {
             metodoPagoController.actualizarMetodoPago(it.id ?: "", nuevoMetodo) { success ->
 
 
-            runOnUiThread {
+                runOnUiThread {
                     if (success) {
                         mostrarToast("Método actualizado")
                         findViewById<LinearLayout>(R.id.layoutActualizarMetodoPago).visibility = View.GONE
