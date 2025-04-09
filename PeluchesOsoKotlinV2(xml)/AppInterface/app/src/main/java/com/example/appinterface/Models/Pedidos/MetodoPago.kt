@@ -1,15 +1,9 @@
 package Models.Pedidos
 
-class MetodoPago (private var NombreMetodoPago: String) {
-    fun MetodoPago(nombreMetodoPago: String){
-        this.NombreMetodoPago = nombreMetodoPago
-    }
+import com.google.gson.annotations.SerializedName
 
-    fun getNombreMetodoPago(): String{
-        return NombreMetodoPago
-    }
+data class MetodoPago(
+    @SerializedName("_id") val id: String? = null,
+    @SerializedName("nombreMetodoPago") var nombreMetodoPago: String
 
-    fun setNombreMetodoPago(nombreMetodoPago: String){
-        this.NombreMetodoPago = nombreMetodoPago
-    }
-}
+)

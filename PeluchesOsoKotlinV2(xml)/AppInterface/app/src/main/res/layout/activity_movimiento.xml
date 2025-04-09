@@ -1,86 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res-auto"
-		xmlns:tools="http://schemas.android.com/tools"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		tools:context=".Views.Productos.MovimientoActivity">
-
-	<TextView
-			android:id="@+id/textViewTitulo"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Formulario Movimientos"
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintHorizontal_bias="0.5"/>
-
-	<EditText
-			android:id="@+id/fechaMovimiento"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:app="http://schemas.android.com/apk/res-auto"
+			xmlns:tools="http://schemas.android.com/tools"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Fecha (YYYY-MM-DD)"
-			android:inputType="date"
-			app:layout_constraintTop_toBottomOf="@id/textViewTitulo"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"/>
+			android:layout_height="match_parent"
+			android:padding="16dp"
+			tools:context=".Views.Productos.MovimientoActivity">
 
-	<EditText
-			android:id="@+id/cantidadIngreso"
+	<LinearLayout
+			android:orientation="vertical"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Cantidad de Ingreso"
-			android:inputType="number"
-			app:layout_constraintTop_toBottomOf="@id/fechaMovimiento"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"/>
+			android:layout_height="wrap_content">
 
-	<EditText
-			android:id="@+id/cantidadSalida"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Cantidad de Salida"
-			android:inputType="number"
-			app:layout_constraintTop_toBottomOf="@id/cantidadIngreso"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"/>
+		<!-- ENCABEZADO -->
+		<TextView
+				android:text="Gestión de Movimientos"
+				android:textSize="24sp"
+				android:textStyle="bold"
+				android:gravity="center"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:paddingBottom="16dp" />
 
-	<Button
-			android:id="@+id/crearMovimiento"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Crear Movimiento"
-			android:onClick="crearMovimiento"
-			app:layout_constraintTop_toBottomOf="@id/cantidadSalida"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintHorizontal_bias="0.936"
-			android:layout_marginTop="36dp"/>
+		<!-- CAMPOS DE CREACIÓN -->
+		<EditText
+				android:id="@+id/fechaMovimiento"
+				android:hint="Fecha del Movimiento"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
 
-	<Button
-			android:id="@+id/listarMovimientos"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Listar Movimientos"
-			android:onClick="listarMovimientos"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintHorizontal_bias="0.066"
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintVertical_bias="0.278"/>
+		<EditText
+				android:id="@+id/cantidadIngreso"
+				android:hint="Cantidad Ingreso"
+				android:inputType="number"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
 
-	<TextView
-			android:id="@+id/textViewMovimientos"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Visualización de los movimientos"
-			app:layout_constraintTop_toBottomOf="@id/listarMovimientos"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			android:layout_marginTop="24dp"
-			app:layout_constraintHorizontal_bias="0.497"/>
+		<EditText
+				android:id="@+id/cantidadVendida"
+				android:hint="Cantidad Vendida"
+				android:inputType="number"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+		<!-- BOTONES DE CREACIÓN Y LISTADO -->
+		<LinearLayout
+				android:orientation="horizontal"
+				android:gravity="center"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:layout_marginBottom="8dp">
+
+			<Button
+					android:id="@+id/btnCrearMovimiento"
+					android:onClick="crearMovimiento"
+					android:text="Crear"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="8dp" />
+
+			<Button
+					android:id="@+id/btnListarMovimientos"
+					android:onClick="listarMovimientos"
+					android:text="Listar"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+		</LinearLayout>
+
+		<!-- LAYOUT DE ACTUALIZACIÓN OCULTO -->
+		<LinearLayout
+				android:id="@+id/layoutActualizarMovimiento"
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:padding="8dp"
+				android:background="#eeeeee"
+				android:visibility="gone">
+
+			<TextView
+					android:text="Actualizar Movimiento"
+					android:textStyle="bold"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+
+			<EditText
+					android:id="@+id/editTextFecha"
+					android:hint="Nueva Fecha"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" />
+
+			<EditText
+					android:id="@+id/editTextIngreso"
+					android:hint="Nuevo Ingreso"
+					android:inputType="number"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" />
+
+			<EditText
+					android:id="@+id/editTextVenta"
+					android:hint="Nueva Venta"
+					android:inputType="number"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" />
+
+			<Button
+					android:id="@+id/btnActualizarMovimiento"
+					android:onClick="actualizarMovimiento"
+					android:text="Actualizar"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp" />
+		</LinearLayout>
+
+		<!-- TABLA DE MOVIMIENTOS -->
+		<TextView
+				android:text="Lista de Movimientos"
+				android:textStyle="bold"
+				android:layout_marginTop="16dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+		<ScrollView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fillViewport="true">
+
+			<TableLayout
+					android:id="@+id/tableMovimientos"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:stretchColumns="*">
+
+				<TableRow
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:background="#DDDDDD">
+
+					<TextView
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:text="Fecha"
+							android:textStyle="bold"
+							android:gravity="center"
+							android:padding="8dp" />
+
+					<TextView
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:text="Ingreso"
+							android:textStyle="bold"
+							android:gravity="center"
+							android:padding="8dp" />
+
+					<TextView
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1"
+							android:text="Venta"
+							android:textStyle="bold"
+							android:gravity="center"
+							android:padding="8dp" />
+
+					<TextView
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"
+							android:layout_weight="1.5"
+							android:text="Acciones"
+							android:textStyle="bold"
+							android:gravity="center"
+							android:padding="8dp" />
+				</TableRow>
+
+			</TableLayout>
+		</ScrollView>
+
+	</LinearLayout>
+</ScrollView>
