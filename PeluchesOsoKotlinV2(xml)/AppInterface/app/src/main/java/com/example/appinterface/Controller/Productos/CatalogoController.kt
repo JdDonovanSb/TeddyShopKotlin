@@ -1,7 +1,6 @@
 package Controller.Productos
 
 import Models.Productos.Catalogo
-import Network.CatalogoApiService
 import android.util.Log
 import com.example.appinterface.Api.RetrofitClient
 import retrofit2.Call

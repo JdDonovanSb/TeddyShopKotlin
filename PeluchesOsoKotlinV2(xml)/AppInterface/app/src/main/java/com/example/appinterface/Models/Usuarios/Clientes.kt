@@ -1,43 +1,11 @@
 package Models.Usuarios
 
-class Clientes (private var DniCliente: Int, private var NombreCliente: String, private var TelefonoCliente: Int, private var ApellidoCliente: String){
+import com.google.gson.annotations.SerializedName
 
-    fun Clientes(dniCliente: Int, nombreCliente: String, telefonoCliente: Int, apellidoCliente: String){
-        this.DniCliente = dniCliente
-        this.NombreCliente = nombreCliente
-        this.TelefonoCliente = telefonoCliente
-        this.ApellidoCliente = apellidoCliente
-    }
-
-    fun getDniCliente(): Int{
-        return DniCliente
-    }
-
-    fun getNombreCliente(): String{
-        return NombreCliente
-    }
-
-    fun getTelefonoCliente(): Int{
-        return TelefonoCliente
-    }
-
-    fun getApellidoCliente(): String{
-        return ApellidoCliente
-    }
-
-    fun setDniCliente(dniCliente: Int){
-        this.DniCliente = dniCliente
-    }
-
-    fun setNombreCliente(nombreCliente: String){
-        this.NombreCliente =nombreCliente
-    }
-
-    fun setTelefonoCliente(telefonoCliente: Int){
-        this.TelefonoCliente = telefonoCliente
-    }
-
-    fun setApellidoCliente(apellidoCliente: String){
-        this.ApellidoCliente = apellidoCliente
-    }
-}
+data class Clientes(
+    @SerializedName("_id") val id: String?, // <--- Esto es clave para actualizar/eliminar
+    @SerializedName("dniCliente") val dniCliente: Int,
+    @SerializedName("nombreCliente") val nombreCliente: String,
+    @SerializedName("apellidoCliente") val apellidoCliente: String,
+    @SerializedName("telefonoCliente") val telefonoCliente: String
+)
