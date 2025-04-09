@@ -160,16 +160,14 @@
 				app:layout_constraintTop_toBottomOf="@id/textViewTituloDialog"
 				android:layout_marginTop="8dp"/>
 
-		<EditText
-				android:id="@+id/editTextEstado"
-				android:layout_width="0dp"
+		<Switch
+				android:id="@+id/switchEstadoRol"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:hint="Estado del Rol"
-				android:inputType="text"
+				android:text="Estado"
+				app:layout_constraintTop_toBottomOf="@id/editTextNombreRol"
 				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/textViewTituloDialog"
-				android:layout_marginTop="8dp"/>
+				android:layout_marginTop="08dp"/>
 
 
 		<Button
@@ -178,7 +176,7 @@
 				android:layout_height="wrap_content"
 				android:text="Actualizar"
 				android:onClick="actualizarRol"
-				app:layout_constraintTop_toBottomOf="@id/editTextEstado"
+				app:layout_constraintTop_toBottomOf="@id/switchEstadoRol"
 				app:layout_constraintStart_toStartOf="parent"
 				android:layout_marginTop="16dp"/>
 
@@ -187,7 +185,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="Cancelar"
-				app:layout_constraintTop_toBottomOf="@id/editTextEstado"
+				app:layout_constraintTop_toBottomOf="@id/switchEstadoRol"
 				app:layout_constraintEnd_toEndOf="parent"
 				android:layout_marginTop="16dp"/>
 	</androidx.constraintlayout.widget.ConstraintLayout>

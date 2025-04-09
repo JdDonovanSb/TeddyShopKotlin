@@ -36,7 +36,7 @@ class MainPedidoActivity : AppCompatActivity() {
     }
 
     fun detallepedidoMenu (view: View){
-        val intent = Intent(this, DetalleFacturaActivity::class.java)
+        val intent = Intent(this, DetallePedidoActivity::class.java)
         startActivity(intent)
     }
 

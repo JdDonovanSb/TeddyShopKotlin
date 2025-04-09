@@ -8,12 +8,10 @@ class DevolucionesController {
 
     private val api = RetrofitClient.devolucionesService
 
-    fun crearDevolucion(numDevolucion: String, detalleDevolucion: String, fechaDevolucion: String, productos: List<String>?, callback: (Boolean) -> Unit) {
+    fun crearDevolucion( detalleDevolucion: String, callback: (Boolean) -> Unit) {
         val devolucion = Devoluciones(
-            numDevolucion = numDevolucion,
             detalleDevolucion = detalleDevolucion,
-            fechaDevolucion = fechaDevolucion,
-            productos = productos ?: emptyList()
+            //inventarios = inventarios ?: emptyList()
         )
 
         api.crearDevoluciones(devolucion).enqueue(object : Callback<Void> {
@@ -55,17 +53,15 @@ class DevolucionesController {
     //}
 
 
-    fun actualizarDevolucion(id: String, numDevolucion: String ,detalleDevolucion: String, fechaDevolucion: String, callback: (Boolean) -> Unit) {
+    fun actualizarDevolucion(id: String, detalleDevolucion: String, callback: (Boolean) -> Unit) {
         val devolucion = Devoluciones(
-            numDevolucion = numDevolucion,
             detalleDevolucion = detalleDevolucion,
-            fechaDevolucion = fechaDevolucion
         )
 
         api.actualizarDevoluciones(id, devolucion).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if(!response.isSuccessful) {
-                    val errorBody = response.errorBody()?.toString()
+                if (!response.isSuccessful) {
+                    val errorBody = response.errorBody()?.string()
                     Log.e("ACTUALIZAR_ERROR", "Código: ${response.code()} - Error: $errorBody")
                 }
                 callback(response.isSuccessful)
@@ -76,9 +72,7 @@ class DevolucionesController {
                 callback(false)
             }
         })
-
     }
-
 
     fun eliminarDevolucion(id: String, callback: (Boolean) -> Unit) {
         api.eliminarDevoluciones(id).enqueue(object : Callback<Void> {

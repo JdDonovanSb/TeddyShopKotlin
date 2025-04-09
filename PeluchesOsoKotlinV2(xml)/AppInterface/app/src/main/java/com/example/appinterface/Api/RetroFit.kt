@@ -1,5 +1,10 @@
 package com.example.appinterface.Api
 
+import com.example.appinterface.Api.Pedidos.DetalleFacturaApiService
+import com.example.appinterface.Api.Pedidos.DetallePedidoApiService
+import com.example.appinterface.Api.Pedidos.FacturaApiService
+import com.example.appinterface.Api.Usuarios.EmpleadoApiService
+import com.example.appinterface.Api.Usuarios.UsuarioApiService
 import Models.Pedidos.MetodoPago
 import com.example.appinterface.Api.Pedidos.*
 import retrofit2.Retrofit
@@ -44,8 +49,14 @@ object RetrofitClient {
     val devolucionesService: DevolucionesApiService
         get() = retrofit.create(DevolucionesApiService::class.java)
 
-    val rolesService:RolesApiService
+    val rolesService: RolesApiService
         get() = retrofit.create(RolesApiService::class.java)
+
+    val facturaService: FacturaApiService
+        get() = retrofit.create(FacturaApiService::class.java)
+
+    val detallePedidoService: DetallePedidoApiService
+        get() = retrofit.create(DetallePedidoApiService::class.java)
 }
 
 

@@ -14,10 +14,7 @@ import com.example.appinterface.Views.AdministradorActivity
 import com.example.appinterface.Views.Productos.CatalogoActivity
 import com.example.appinterface.Views.Productos.MainProductosActivity
 
-//import Controller.Productos.CategoriaController
-
 class MainActivity : AppCompatActivity() {
-    //private val categoriaController = CategoriaController()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
