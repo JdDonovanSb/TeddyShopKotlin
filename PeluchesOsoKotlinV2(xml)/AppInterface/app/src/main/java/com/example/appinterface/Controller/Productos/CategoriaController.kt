@@ -1,7 +1,6 @@
 package Controller.Productos
 
 import Models.Productos.Categoria
-import Network.CategoriaApiService
 import com.example.appinterface.Api.RetrofitClient
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory

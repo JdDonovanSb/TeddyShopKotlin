@@ -1,36 +1,12 @@
 package Models.Productos
 
-class Movimiento (private var Fecha: String, private var CantidadIngreso: Int, private var CantidadVendida: Int){
+import com.google.gson.annotations.SerializedName
 
-    fun Movimiento(fecha: String, cantidadIngreso: Int, cantidadVendida: Int){
-        this.Fecha = fecha
-        this.CantidadIngreso = cantidadIngreso
-        this.CantidadVendida = cantidadVendida
-    }
+data class Movimiento(
+    @SerializedName("_id") val id: String?,
+    @SerializedName("fecha") var fecha: String,
+    @SerializedName("cantidadIngreso") var cantidadIngreso: Int,
+    @SerializedName("cantidadVendida") var cantidadVendida: Int,
+    @SerializedName("inventario") var inventario: String? = null // ← hacerlo nullable
+)
 
-    fun getFecha(): String{
-        return Fecha
-    }
-
-    fun getCantidadIngreso(): Int{
-        return CantidadIngreso
-    }
-
-    fun getCantidadVendida(): Int{
-        return CantidadVendida
-    }
-
-
-    fun setFecha(fecha: String) {
-        this.Fecha = fecha
-    }
-
-    fun setCantidadIngreso(cantidadIngreso: Int) {
-        this.CantidadIngreso = cantidadIngreso
-    }
-
-    fun setCantidadVendida(cantidadIngreso: Int) {
-        this.CantidadVendida = cantidadIngreso
-    }
-
-}

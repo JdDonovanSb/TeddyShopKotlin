@@ -1,4 +1,4 @@
-package Network
+package com.example.appinterface.Api
 
 import Models.Productos.Catalogo
 import retrofit2.Call

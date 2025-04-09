@@ -1,67 +1,80 @@
 package Controller.Pedidos
+
 import Models.Pedidos.MetodoPago
-import java.util.*
+import android.util.Log
+import com.example.appinterface.Api.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 class MetodoPagoController {
 
-    private val metodoPagos = mutableMapOf<String, MetodoPago>()
+    private val api = RetrofitClient.MetodoPagoService
 
-    //Crear un nuevo Metodo de pago
+    fun listarMetodosPago(callback: (List<MetodoPago>?) -> Unit) {
+        api.listarMetodoPago().enqueue(object : Callback<List<MetodoPago>> {
+            override fun onResponse(call: Call<List<MetodoPago>>, response: Response<List<MetodoPago>>) {
+                if (response.isSuccessful) {
+                    Log.d("MetodoPagoController", "Métodos de pago recibidos: ${response.body()}")
+                    callback(response.body())
+                } else {
+                    Log.e("MetodoPagoController", "Respuesta fallida o vacía: ${response.errorBody()?.string()}")
+                    callback(null)
+                }
+            }
 
-    fun crearMetodoPago(nombreMetodoPago : String): String {
-        val id = UUID.randomUUID().toString()  // Generar ID único
-        val metodoPago = MetodoPago(nombreMetodoPago)
-        metodoPagos[id] = metodoPago
-        return "Metodo de pago creado con éxito."
+            override fun onFailure(call: Call<List<MetodoPago>>, t: Throwable) {
+                Log.e("MetodoPagoController", "Error en listarMetodosPago", t)
+                callback(null)
+            }
+        })
     }
 
-    //LIstar Metodos de pago
-    fun listarMetodoPagos(): String {
-        if (metodoPagos.isEmpty()) {
-            return "No hay Metodos de Pago disponibles."
-        }
-        return metodoPagos.entries.joinToString("\n") {
-            "ID: ${it.key}, Nombre metodo de pago: ${it.value.getNombreMetodoPago()}"
-        }
+    fun crearMetodoPago(metodoPago: MetodoPago, callback: (Boolean) -> Unit) {
+        api.crearMetodoPago(metodoPago).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Log.d("MetodoPagoController", "Método de pago creado correctamente")
+                } else {
+                    Log.w("MetodoPagoController", "Error de respuesta: ${response.code()} - ${response.errorBody()?.string()}")
+                }
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("MetodoPagoController", " Error al crear método de pago: ${t.localizedMessage}", t)
+                callback(false)
+            }
+        })
     }
 
-    //Buscar un Metodo de Pago por ID
-    fun buscarMetodoPagoPorId(id: String): String {
-        val metodoPago = metodoPagos[id]
-        return if (metodoPago != null) {
-            " encontrado: Nombre de metodo de pago: ${metodoPago.getNombreMetodoPago()}"
-        } else {
-            "Metodo de Pago no encontrado."
-        }
+    fun actualizarMetodoPago(id: String, metodoPago: MetodoPago, callback: (Boolean) -> Unit) {
+        api.actualizarMetodoPago(id, metodoPago).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (!response.isSuccessful) {
+                    Log.w("MetodoPagoController", "Error al actualizar: ${response.code()} - ${response.errorBody()?.string()}")
+                }
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("MetodoPagoController", "Error de red al actualizar", t)
+                callback(false)
+            }
+        })
     }
 
-    // Actualizar un Metodo de Pago por ID
-    fun actualizarMetodoPago(id: String): String {
-        val metodoPago = metodoPagos[id]
-        if (metodoPago != null) {
-            println("Ingresa el nuevo Nombre del metodo de pago(actual: ${metodoPago.getNombreMetodoPago()}):")
-            val nuevoNombre = readLine()?.toString() ?: metodoPago.getNombreMetodoPago()
-            // Actualizar Metodo Pago
-            metodoPago.setNombreMetodoPago(nuevoNombre)
+    fun eliminarMetodoPago(id: String, callback: (Boolean) -> Unit) {
+        api.eliminarMetodoPago(id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                Log.d("MetodoPagoController", "Método de pago eliminado - éxito: ${response.isSuccessful}")
+                callback(response.isSuccessful)
+            }
 
-
-            return "Metodo de pago actualizado con éxito."
-        } else {
-            return "Metodo de pago con ID $id no encontrado."
-        }
-
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("MetodoPagoController", "Error al eliminar método de pago", t)
+                callback(false)
+            }
+        })
     }
-    //Eliminar un metodo de pago por ID
-
-    fun eliminarMetodoPago(id: String): String {
-        return if (metodoPagos.remove(id) != null) {
-            "Metodo de Pago eliminado con éxito."
-        } else {
-            "Metodo de pago no encontrado."
-        }
-    }
-
-
 }
-
-
-
