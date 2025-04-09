@@ -20,19 +20,6 @@
 			app:layout_constraintBottom_toBottomOf="parent"/>
 
 	<EditText
-			android:id="@+id/numDevolucion"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:hint="Numero de la devolución"
-			android:inputType="text"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintHorizontal_bias="0.0"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintVertical_bias="0.056"/>
-
-	<EditText
 			android:id="@+id/detalleDevolucion"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
@@ -44,18 +31,6 @@
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintVertical_bias="0.135"/>
-	<EditText
-			android:id="@+id/fechaDevolucion"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:hint="Fecha de la devoluvión (DD-MM-AA)"
-			android:inputType="text"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintHorizontal_bias="0.0"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintVertical_bias="0.201"/>
 
 	<!-- DataTable para mostrar los elementos -->
 	<Button
@@ -119,14 +94,6 @@
 						android:layout_width="0dp"
 						android:layout_height="wrap_content"
 						android:layout_weight="1"
-						android:text="Fecha"
-						android:padding="8dp"
-						android:textStyle="bold"/>
-
-				<TextView
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:layout_weight="1"
 						android:text="Detalles"
 						android:padding="8dp"
 						android:textStyle="bold"/>
@@ -165,33 +132,12 @@
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintEnd_toEndOf="parent" />
 
-		<EditText
-				android:id="@+id/editTextNum"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:hint="Numero del detalle"
-				android:inputType="text"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/textViewTituloDialog"
-				android:layout_marginTop="8dp"/>
 
 		<EditText
 				android:id="@+id/editTextDetalle"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:hint="Deatalle de la devolución"
-				android:inputType="text"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/textViewTituloDialog"
-				android:layout_marginTop="8dp"/>
-
-		<EditText
-				android:id="@+id/editTextFecha"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:hint="Fecha de la devolución"
 				android:inputType="text"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
@@ -205,7 +151,7 @@
 				android:layout_height="wrap_content"
 				android:text="Actualizar"
 				android:onClick="actualizarDevolucion"
-				app:layout_constraintTop_toBottomOf="@id/editTextFecha"
+				app:layout_constraintTop_toBottomOf="@id/editTextDetalle"
 				app:layout_constraintStart_toStartOf="parent"
 				android:layout_marginTop="16dp"/>
 
@@ -214,7 +160,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="Cancelar"
-				app:layout_constraintTop_toBottomOf="@id/editTextFecha"
+				app:layout_constraintTop_toBottomOf="@id/editTextDetalle"
 				app:layout_constraintEnd_toEndOf="parent"
 				android:layout_marginTop="16dp"/>
 	</androidx.constraintlayout.widget.ConstraintLayout>

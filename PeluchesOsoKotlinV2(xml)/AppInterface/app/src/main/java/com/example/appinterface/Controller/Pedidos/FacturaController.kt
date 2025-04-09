@@ -1,60 +1,84 @@
 package Controller.Pedidos
 
 import Models.Pedidos.Factura
-import java.util.*
+import android.annotation.SuppressLint
+
+import android.util.Log
+import com.example.appinterface.Api.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FacturaController {
+    private val api = RetrofitClient.facturaService
 
-    private val facturas = mutableMapOf<String, Factura>()
+    fun crearFactura(fecha: String, hora: String, callback: (Boolean) -> Unit) {
+        val factura = Factura(
+            fechaCreacionFactura = fecha,
+            horaCreacionFactura = hora
+        )
 
-    // Crear una nueva factura
-    fun crearFactura(fechaCreacionFactura: String, horaCreacionFactura: String, montoTotal: Double): String {
-        val id = UUID.randomUUID().toString()
-        val factura = Factura(fechaCreacionFactura, horaCreacionFactura, montoTotal)
+        api.crearFactura(factura).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
 
-        facturas[id] = factura
-        return "Factura creada con éxito con el ID: $id"
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("FACTURA_CREAR_ERROR", "Error al crear factura: ${t.message}")
+                callback(false)
+            }
+        })
     }
 
-    // Listar todas las facturas
-    fun listarFacturas(): String {
-        if (facturas.isEmpty()) {
-            return "No hay facturas registradas"
-        }
-        return facturas.entries.joinToString("\n") {
-            "ID: ${it.key}, Fecha: ${it.value.getFechaCreacionFactura()}, Hora: ${it.value.getHoraCreacionFactura()}, Monto: ${it.value.getMontoTotal()}"
-        }
+    fun actualizarFactura(id: String, fecha: String, hora: String, callback: (Boolean) -> Unit) {
+        val factura = Factura(
+            fechaCreacionFactura = fecha,
+            horaCreacionFactura = hora
+        )
+
+        api.actualizarFactura(id, factura).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (!response.isSuccessful) {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("ACTUALIZAR_ERROR", "Código: ${response.code()} - Error: $errorBody")
+                }
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("FACTURA_ACTUALIZAR_FAIL", "Error de red: ${t.message}")
+                callback(false)
+            }
+        })
     }
 
-    // Buscar una factura por ID
-    fun buscarFacturaPorId(id: String): String {
-        val factura = facturas[id]
-        return if (factura != null) {
-            "Factura encontrada: Fecha: ${factura.getFechaCreacionFactura()}, Hora: ${factura.getHoraCreacionFactura()}, Monto: ${factura.getMontoTotal()}"
-        } else {
-            "Factura no encontrada."
-        }
+    fun listarFacturas(callback: (List<Factura>?) -> Unit) {
+        api.listarFacturas().enqueue(object : Callback<List<Factura>> {
+            override fun onResponse(call: Call<List<Factura>>, response: Response<List<Factura>>) {
+                if (response.isSuccessful) {
+                    callback(response.body())
+                } else {
+                    callback(null)
+                }
+            }
+
+            override fun onFailure(call: Call<List<Factura>>, t: Throwable) {
+                Log.e("FACTURA_LISTAR_ERROR", "Error de red: ${t.message}")
+                callback(null)
+            }
+        })
     }
 
-    // Actualizar una factura por ID
-    fun actualizarFactura(id: String, nuevaFecha: String, nuevaHora: String, nuevoMonto: Double): String {
-        val factura = facturas[id]
-        return if (factura != null) {
-            factura.setFechaCreacionFactura(nuevaFecha)
-            factura.setHoraCreacionFactura(nuevaHora)
-            factura.setMontoTotal(nuevoMonto)
-            "Detalles de la factura actualizados con éxito."
-        } else {
-            "La factura con ID: $id no se encontró."
-        }
-    }
+    fun eliminarFactura(id: String, callback: (Boolean) -> Unit) {
+        api.eliminarFactura(id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
 
-    // Eliminar una factura por ID
-    fun eliminarFactura(id: String): String {
-        return if (facturas.remove(id) != null) {
-            "Factura eliminada con éxito."
-        } else {
-            "La factura con ID: $id no se encontró."
-        }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("FACTURA_ELIMINAR_FAIL", "Error de red: ${t.message}")
+                callback(false)
+            }
+        })
     }
 }

@@ -38,17 +38,13 @@ class DevolucionesActivity : AppCompatActivity() {
 
 
     fun crearDevolucion(v: View) {
-        val numDevolucion = findViewById<EditText>(R.id.numDevolucion).text.toString()
         val detalleDevolucion = findViewById<EditText>(R.id.detalleDevolucion).text.toString()
-        val fechaDevolucion = findViewById<EditText>(R.id.fechaDevolucion).text.toString()
 
-
-        if (numDevolucion.isEmpty() || detalleDevolucion.isEmpty()) {
+        if ( detalleDevolucion.isEmpty()) {
             mostrarToast("Complete todos los campos")
             return
         }
-
-        devolucionesController.crearDevolucion(numDevolucion, detalleDevolucion, fechaDevolucion, productos = null) { success ->
+        devolucionesController.crearDevolucion( detalleDevolucion) { success ->
             runOnUiThread {
                 if (success) {
                     Toast.makeText(this, "Devolucion creada con exito", Toast.LENGTH_SHORT).show()
@@ -67,7 +63,6 @@ class DevolucionesActivity : AppCompatActivity() {
                 table.removeViews(1, table.childCount - 1)
                 devoluciones?.forEach { devoluciones ->
                     val row = TableRow(this).apply {
-                        addView(createCell(devoluciones.fechaDevolucion))
                         addView(createCell(devoluciones.detalleDevolucion))
                         addView(crearBotonesAccion(devoluciones))
                     }
@@ -88,16 +83,11 @@ class DevolucionesActivity : AppCompatActivity() {
 
     fun actualizarDevolucion(v: View) {
         devolucionSeleccionada?.let {devoluciones ->
-            val nuevoNumDetalle = findViewById<EditText>(R.id.editTextNum).text.toString()
             val nuevoDetalleDevolucion = findViewById<EditText>(R.id.editTextDetalle).text.toString()
-            val nuevaFechaDevolucion = findViewById<EditText>(R.id.editTextFecha).text.toString()
-
 
             devolucionesController.actualizarDevolucion(
                 devoluciones.id ?: return,
-                nuevoNumDetalle,
-                nuevoDetalleDevolucion,
-                nuevaFechaDevolucion
+                nuevoDetalleDevolucion
             ) { success -> runOnUiThread {
                 if(success) {
                     mostrarToast("Actualizado correctamente")
@@ -164,18 +154,14 @@ class DevolucionesActivity : AppCompatActivity() {
     private fun mostrarFormularioEdicion(devoluciones: Devoluciones) {
         devolucionSeleccionada = devoluciones
         findViewById<ConstraintLayout>(R.id.layoutActualizarDevolucion).visibility = View.VISIBLE
-        findViewById<EditText>(R.id.editTextNum).setText(devoluciones.numDevolucion)
         findViewById<EditText>(R.id.editTextDetalle).setText(devoluciones.detalleDevolucion)
-        findViewById<EditText>(R.id.editTextFecha).setText(devoluciones.fechaDevolucion)
     }
 
     private fun verDetalles(devoluciones: Devoluciones) {
         android.app.AlertDialog.Builder(this)
             .setTitle("Detalles de la Devolución")
             .setMessage("""
-             Numero del detalle: ${devoluciones.numDevolucion}
              Detalle: ${devoluciones.detalleDevolucion}
-             Fecha del detalle: ${devoluciones.fechaDevolucion}
          """.trimIndent())
             .setPositiveButton("Cerrar", null)
             .show()

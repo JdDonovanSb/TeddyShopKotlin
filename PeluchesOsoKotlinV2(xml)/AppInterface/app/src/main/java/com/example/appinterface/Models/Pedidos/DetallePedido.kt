@@ -1,23 +1,10 @@
 package Models.Pedidos
 
-class DetallePedido (private var NumDetallePedido : Int, private var PrecioDetallePedido : Double, private var CantidadDetallePedido : Int, ){
+import com.google.gson.annotations.SerializedName
 
-    fun DetallePedido(numDetallePedido: Int, precioDetallePedido: Double, cantidadDetallePedido: Int ){
-        this.NumDetallePedido = numDetallePedido
-        this.PrecioDetallePedido = precioDetallePedido
-        this.CantidadDetallePedido = cantidadDetallePedido
-    }
-
-    fun getNumDetallePedido(): Int {
-        return NumDetallePedido
-    }
-
-    fun getPrecioDetallePedido(): Double {
-        return PrecioDetallePedido
-    }
-
-    fun getCantidadDetallePedido(): Int {
-        return CantidadDetallePedido
-    }
-
-}
+data class DetallePedido(
+    @SerializedName("_id") val id: String? = null,
+    @SerializedName("numDetalle") val numDetallePedido: Int?,
+    @SerializedName("precioDetallePedido") val precioDetallePedido: Double,
+    @SerializedName("cantidadDetallePedido") val cantidadDetallePedido: Int
+)

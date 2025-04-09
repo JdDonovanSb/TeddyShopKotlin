@@ -78,7 +78,7 @@ class RolesActivity: AppCompatActivity() {
     fun actualizarRol(v: View) {
         rolSeleccionado?.let {roles ->
             val nuevoNombre = findViewById<EditText>(R.id.editTextNombreRol).text.toString()
-            val nuevoEstado = findViewById<EditText>(R.id.editTextEstado).text.toString().toBoolean()
+            val nuevoEstado = findViewById<Switch>(R.id.switchEstadoRol).isChecked
 
 
             rolesController.actualizarRol(

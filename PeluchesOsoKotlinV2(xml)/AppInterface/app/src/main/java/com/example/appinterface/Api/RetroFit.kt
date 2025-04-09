@@ -3,6 +3,9 @@ package com.example.appinterface.Api
 import Network.CategoriaApiService
 import Network.CatalogoApiService
 import com.example.appinterface.Api.Pedidos.DetalleFacturaApiService
+import com.example.appinterface.Api.Pedidos.DetallePedidoApiService
+import com.example.appinterface.Api.Pedidos.DevolucionesApiService
+import com.example.appinterface.Api.Pedidos.FacturaApiService
 import com.example.appinterface.Api.Usuarios.EmpleadoApiService
 import com.example.appinterface.Api.Usuarios.UsuarioApiService
 import retrofit2.Retrofit
@@ -37,7 +40,14 @@ object RetrofitClient {
 
     val rolesService: RolesApiService
         get() = retrofit.create(RolesApiService::class.java)
+
+    val facturaService: FacturaApiService
+        get() = retrofit.create(FacturaApiService::class.java)
+
+    val detallePedidoService: DetallePedidoApiService
+        get() = retrofit.create(DetallePedidoApiService::class.java)
 }
+
 
 
 
