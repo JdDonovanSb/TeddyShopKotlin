@@ -1,79 +1,90 @@
 package Controller.Productos
 
 import Models.Productos.HistorialPrecio
-import android.icu.text.DateFormat
-import java.util.*
+import com.example.appinterface.Api.Productos.HistorialPrecioApiService
+import com.example.appinterface.Api.RetrofitClient
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.Date
+
 
 class HistorialPrecioController {
 
-    private val historialPrecios = mutableMapOf<String, HistorialPrecio>()
+    private val api = RetrofitClient.historialPrecioService
 
-    //Crear un historialPrecio
-    fun crearHistorialPrecio(precio: Double, fechaInicio: String, fechaFin: String, estadoPrecio: Boolean): String {
-        val id = UUID.randomUUID().toString()  // Generar ID único
-        val historialPrecio = HistorialPrecio(precio, fechaInicio, fechaFin, estadoPrecio)
+    // Crear un historial de precio
+    fun crearHistorialPrecio(precio: Double, fechaInicio: Date, fechaFin: Date, estadoPrecio: Boolean,
+                             producto: List<String>?, callback: (Boolean) -> Unit) {
 
-        historialPrecios[id] = historialPrecio
-        return "historial  de precio  creado con éxito."
+        val historialPrecio = HistorialPrecio(
+            id = null,
+            precio = precio,
+            fechaInicio = fechaInicio,
+            fechaFin = fechaFin,
+            estadoPrecio = estadoPrecio,
+            //producto = producto ?: emptyList()
+        )
+
+        api.crearHistorialPrecio(historialPrecio).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+                }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
     }
 
-    //LIstar historial precios
-    fun listarHistorialPrecios(): String {
-        if (historialPrecios.isEmpty()) {
-            return "No hay historiales de precios disponibles."
-        }
+    // Listar los historiales de precios
+    fun listarHistorialPrecios(callback: (List<HistorialPrecio>?) -> Unit) {
+        api.listarHistorialPrecios().enqueue(object : Callback<List<HistorialPrecio>> {
+            override fun onResponse(call: Call<List<HistorialPrecio>>, response: Response<List<HistorialPrecio>>) {
+                if (response.isSuccessful) {
+                    callback(response.body())
+                } else {
+                    callback(null)
+                }
+            }
 
-        return historialPrecios.entries.joinToString("\n") {
-            "ID: ${it.key}, Precio: ${it.value.getPrecio()}, Fecha Incio : ${it.value.getFechaInicio()}, Fecha Fin : ${it.value.getFechaFin()}, Estado de historial de precio : ${it.value.getEstadoPrecio()}"
-        }
-    }
-
-    //Buscar un Historial de precio por ID
-    fun buscarHistorialPrecioPorId(id: String): String {
-        val historialPrecio =  historialPrecios[id]
-        return if (historialPrecio != null) {
-            " encontrado: Precio: ${historialPrecio.getPrecio()}, Fecha de inicio: ${historialPrecio.getFechaInicio()}, Fecha de fin : ${historialPrecio.getFechaFin()}, Estado del precio : ${historialPrecio.getEstadoPrecio()}"
-        } else {
-            "historial de precio no encontrado."
-        }
+            override fun onFailure(call: Call<List<HistorialPrecio>>, t: Throwable) {
+                callback(null)
+            }
+        })
     }
 
     // Actualizar un historial de precio por ID
-    fun actualizarHistorialPrecio(id: String): String {
-        val historialPrecio = historialPrecios[id]
-        if (historialPrecio != null) {
-            println("Ingresa el nuevo precio (actual: ${historialPrecio.getPrecio()}):")
-            val nuevoPrecio = readLine()?.toDouble() ?: historialPrecio.getPrecio()
+    fun actualizarHistorialPrecio(id: String, precio: Double, fechaInicio: Date, fechaFin: Date, estadoPrecio: Boolean, callback: (Boolean) -> Unit) {
+        val historialPrecio = HistorialPrecio(
+            precio = precio,
+            fechaInicio = fechaInicio,
+            fechaFin = fechaFin,
+            estadoPrecio = estadoPrecio,
+        )
 
-            println("Ingresa la nueva fecha de inicio del precio  (actual: ${historialPrecio.getFechaInicio()}):")
-            val nuevaFechaInicio = readLine() ?: historialPrecio.getFechaInicio()
+        api.actualizarHistorialPrecio(id, historialPrecio).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
 
-            println("Ingresa la nueva fecha de fin del precio(actual: ${historialPrecio.getFechaFin()}):")
-            val nuevaFechaFin = readLine() ?: historialPrecio.getFechaFin()
-
-            println("¿Está disponible el historial de precio? (true/false, actual: ${historialPrecio.getEstadoPrecio()}):")
-            val nuevoEstado = readLine()?.toBoolean() ?: historialPrecio.getEstadoPrecio()
-
-            // Actualizar historial precio
-            //historialPrecio.setPrecio(nuevoPrecio)
-            //historialPrecio.setFechaInicio(nuevaFechaInicio)
-            //historialPrecio.setFechaFin(nuevaFechaFin)
-            //historialPrecio.setEstadoPrecio(nuevoEstado)
-
-            return "historial de precio actualizado con éxito."
-        } else {
-            return "historial de precio con ID $id no encontrado."
-        }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
     }
 
-    // Eliminar un historial de precio por ID
-    fun eliminarHistorialPrecio(id: String): String {
-        return if (historialPrecios.remove(id) != null) {
-            "historial de precio eliminado con éxito."
-        } else {
-            "historial de precio no encontrado."
-        }
+    // Eliminar un historial de precio
+    fun eliminarHistorialPrecio(id: String, callback: (Boolean) -> Unit) {
+        api.eliminarHistorialPrecio(id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                callback(response.isSuccessful)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                callback(false)
+            }
+        })
     }
 }
-
-
