@@ -1,49 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:padding="16dp">
+			android:padding="16dp"
+			android:background="#F5F5F5">
 
 	<LinearLayout
 			android:orientation="vertical"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-
+			android:layout_height="wrap_content"
+			android:padding="8dp"
+			android:background="@android:color/white"
+			android:elevation="4dp"
+			android:layout_margin="8dp"
+			android:clipToPadding="false">
 		<!-- Crear Cliente -->
+		<TextView
+				android:text="Crear Cliente"
+				android:textStyle="bold"
+				android:textSize="18sp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:layout_marginTop="8dp"/>
+
 		<EditText
 				android:id="@+id/editTextDni"
 				android:hint="DNI"
 				android:inputType="text"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:backgroundTint="#FF6200EE"/>
 
 		<EditText
 				android:id="@+id/editTextNombre"
 				android:hint="Nombre"
 				android:inputType="textPersonName"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:backgroundTint="#FF6200EE"/>
 
 		<EditText
 				android:id="@+id/editTextApellido"
 				android:hint="Apellido"
 				android:inputType="textPersonName"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:backgroundTint="#FF6200EE"/>
 
 		<EditText
 				android:id="@+id/editTextTelefono"
 				android:hint="Teléfono"
 				android:inputType="phone"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="12dp"
+				android:backgroundTint="#FF6200EE"/>
 
 		<Button
 				android:id="@+id/btnCrearCliente"
 				android:text="Crear Cliente"
 				android:onClick="crearCliente"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content" />
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:backgroundTint="#FF6200EE"
+				android:textColor="#FFFFFF"/>
 
 		<Button
 				android:id="@+id/btnListarClientes"
@@ -51,16 +75,28 @@
 				android:onClick="listarClientes"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="8dp" />
+				android:layout_marginTop="8dp"
+				android:backgroundTint="#FF3700B3"
+				android:textColor="#FFFFFF"/>
 
 		<!-- Buscar Cliente por DNI -->
+		<TextView
+				android:text="Buscar Cliente por DNI"
+				android:textStyle="bold"
+				android:textSize="16sp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:layout_marginBottom="8dp"/>
+
 		<EditText
 				android:id="@+id/editTextBuscarDni"
 				android:hint="Buscar Cliente por DNI"
 				android:inputType="text"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="16dp" />
+				android:layout_marginBottom="8dp"
+				android:backgroundTint="#FF6200EE"/>
 
 		<Button
 				android:id="@+id/btnBuscarCliente"
@@ -68,7 +104,9 @@
 				android:onClick="buscarClientePorDni"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="8dp" />
+				android:layout_marginTop="8dp"
+				android:backgroundTint="#FF6200EE"
+				android:textColor="#FFFFFF"/>
 
 		<!-- Formulario para actualizar -->
 		<LinearLayout
@@ -77,63 +115,98 @@
 				android:visibility="gone"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="16dp">
+				android:layout_marginTop="16dp"
+				android:background="#EEEEEE"
+				android:padding="12dp"
+				android:elevation="2dp">
+
+			<TextView
+					android:text="Actualizar Cliente"
+					android:textStyle="bold"
+					android:textSize="16sp"
+					android:layout_marginBottom="8dp"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
 
 			<EditText
 					android:id="@+id/editTextNombreActualizar"
 					android:hint="Nuevo Nombre"
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content" />
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="8dp"
+					android:backgroundTint="#FF6200EE"/>
 
 			<EditText
 					android:id="@+id/editTextApellidoActualizar"
 					android:hint="Nuevo Apellido"
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content" />
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="8dp"
+					android:backgroundTint="#FF6200EE"/>
 
 			<EditText
 					android:id="@+id/editTextTelefonoActualizar"
 					android:hint="Nuevo Teléfono"
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content" />
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="8dp"
+					android:backgroundTint="#FF6200EE"/>
 
 			<Button
 					android:id="@+id/btnActualizarCliente"
 					android:text="Actualizar Cliente"
 					android:onClick="actualizarCliente"
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content" />
+					android:layout_height="wrap_content"
+					android:backgroundTint="#FF6200EE"
+					android:textColor="#FFFFFF"/>
 		</LinearLayout>
 
 		<!-- Tabla para mostrar los clientes -->
+		<TextView
+				android:text="Listado de Clientes"
+				android:textStyle="bold"
+				android:textSize="16sp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:layout_marginBottom="8dp"/>
+
 		<TableLayout
 				android:id="@+id/tableClientes"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:stretchColumns="*"
-				android:layout_marginTop="16dp">
+				android:layout_marginTop="8dp"
+				android:background="#FAFAFA"
+				android:padding="8dp"
+				android:elevation="1dp">
 
 			<!-- Encabezados -->
 			<TableRow>
 				<TextView
 						android:text="Nombre"
 						android:padding="8dp"
-						android:textStyle="bold" />
+						android:textStyle="bold"
+						android:textColor="#000000" />
 
 				<TextView
 						android:text="Apellido"
 						android:padding="8dp"
-						android:textStyle="bold" />
+						android:textStyle="bold"
+						android:textColor="#000000" />
 
 				<TextView
 						android:text="Teléfono"
 						android:padding="8dp"
-						android:textStyle="bold" />
+						android:textStyle="bold"
+						android:textColor="#000000" />
 
 				<TextView
 						android:text="Acciones"
 						android:padding="8dp"
-						android:textStyle="bold" />
+						android:textStyle="bold"
+						android:textColor="#000000" />
 			</TableRow>
 		</TableLayout>
 	</LinearLayout>

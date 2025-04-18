@@ -103,7 +103,8 @@ class UsuarioActivity : AppCompatActivity() {
 
     private fun mostrarFormularioEdicion(usuario: Usuario) {
         usuarioSeleccionado = usuario
-        findViewById<ConstraintLayout>(R.id.layoutActualizarUsuario).visibility = View.VISIBLE
+        findViewById<LinearLayout>(R.id.layoutActualizarUsuario).visibility = View.VISIBLE
+
 
         findViewById<EditText>(R.id.editTextEmail).setText(usuario.email)
         findViewById<EditText>(R.id.editTextUsername).setText(usuario.username)
@@ -125,7 +126,7 @@ class UsuarioActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (success) {
                         mostrarToast("Actualizado correctamente")
-                        findViewById<ConstraintLayout>(R.id.layoutActualizarUsuario).visibility = View.GONE
+                        findViewById<LinearLayout>(R.id.layoutActualizarUsuario).visibility = View.GONE
                         listarUsuarios(findViewById(R.id.listarUsuarios))
                     } else {
                         mostrarToast("Error al actualizar")
