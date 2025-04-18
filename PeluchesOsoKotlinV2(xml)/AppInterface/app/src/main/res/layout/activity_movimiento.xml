@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-			xmlns:app="http://schemas.android.com/apk/res-auto"
-			xmlns:tools="http://schemas.android.com/tools"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:padding="16dp"
-			tools:context=".Views.Productos.MovimientoActivity">
+			android:background="#F5F5F5">
 
 	<LinearLayout
 			android:orientation="vertical"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"
+			android:padding="8dp"
+			android:background="@android:color/white"
+			android:elevation="4dp"
+			android:layout_margin="8dp"
+			android:layout_gravity="center"
+			android:clipToPadding="false">
 
-		<!-- ENCABEZADO -->
+		<!-- Crear Movimiento -->
 		<TextView
-				android:text="Gestión de Movimientos"
-				android:textSize="24sp"
+				android:text="Crear Movimiento"
 				android:textStyle="bold"
-				android:gravity="center"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:paddingBottom="16dp" />
+				android:textSize="18sp"
+				android:layout_marginBottom="8dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
 
-		<!-- CAMPOS DE CREACIÓN -->
 		<EditText
 				android:id="@+id/fechaMovimiento"
 				android:hint="Fecha del Movimiento"
+				android:inputType="text"
+				android:backgroundTint="#FF6200EE"
+				android:layout_marginBottom="8dp"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content" />
 
@@ -33,6 +38,8 @@
 				android:id="@+id/cantidadIngreso"
 				android:hint="Cantidad Ingreso"
 				android:inputType="number"
+				android:backgroundTint="#FF6200EE"
+				android:layout_marginBottom="8dp"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content" />
 
@@ -40,53 +47,56 @@
 				android:id="@+id/cantidadVendida"
 				android:hint="Cantidad Vendida"
 				android:inputType="number"
+				android:backgroundTint="#FF6200EE"
+				android:layout_marginBottom="12dp"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content" />
 
-		<!-- BOTONES DE CREACIÓN Y LISTADO -->
-		<LinearLayout
-				android:orientation="horizontal"
-				android:gravity="center"
+		<Button
+				android:id="@+id/btnCrearMovimiento"
+				android:text="Crear Movimiento"
+				android:onClick="crearMovimiento"
+				android:backgroundTint="#FF6200EE"
+				android:textColor="#FFFFFF"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
+				android:layout_height="wrap_content" />
+
+		<Button
+				android:id="@+id/btnListarMovimientos"
+				android:text="Listar Movimientos"
+				android:onClick="listarMovimientos"
+				android:backgroundTint="#FF3700B3"
+				android:textColor="#FFFFFF"
 				android:layout_marginTop="8dp"
-				android:layout_marginBottom="8dp">
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
 
-			<Button
-					android:id="@+id/btnCrearMovimiento"
-					android:onClick="crearMovimiento"
-					android:text="Crear"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_marginEnd="8dp" />
-
-			<Button
-					android:id="@+id/btnListarMovimientos"
-					android:onClick="listarMovimientos"
-					android:text="Listar"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content" />
-		</LinearLayout>
-
-		<!-- LAYOUT DE ACTUALIZACIÓN OCULTO -->
+		<!-- Actualizar Movimiento -->
 		<LinearLayout
 				android:id="@+id/layoutActualizarMovimiento"
 				android:orientation="vertical"
+				android:visibility="gone"
+				android:layout_marginTop="16dp"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:padding="8dp"
-				android:background="#eeeeee"
-				android:visibility="gone">
+				android:background="#EEEEEE"
+				android:padding="12dp"
+				android:layout_marginBottom="8dp"
+				android:elevation="2dp">
 
 			<TextView
 					android:text="Actualizar Movimiento"
 					android:textStyle="bold"
+					android:textSize="16sp"
+					android:layout_marginBottom="8dp"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content" />
 
 			<EditText
 					android:id="@+id/editTextFecha"
 					android:hint="Nueva Fecha"
+					android:backgroundTint="#FF6200EE"
+					android:layout_marginBottom="8dp"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />
 
@@ -94,6 +104,8 @@
 					android:id="@+id/editTextIngreso"
 					android:hint="Nuevo Ingreso"
 					android:inputType="number"
+					android:backgroundTint="#FF6200EE"
+					android:layout_marginBottom="8dp"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />
 
@@ -101,81 +113,66 @@
 					android:id="@+id/editTextVenta"
 					android:hint="Nueva Venta"
 					android:inputType="number"
+					android:backgroundTint="#FF6200EE"
+					android:layout_marginBottom="8dp"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />
 
 			<Button
 					android:id="@+id/btnActualizarMovimiento"
+					android:text="Actualizar Movimiento"
 					android:onClick="actualizarMovimiento"
-					android:text="Actualizar"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="8dp" />
+					android:backgroundTint="#FF6200EE"
+					android:textColor="#FFFFFF"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" />
 		</LinearLayout>
 
-		<!-- TABLA DE MOVIMIENTOS -->
+		<!-- Tabla de Movimientos -->
 		<TextView
-				android:text="Lista de Movimientos"
+				android:text="Listado de Movimientos"
+				android:textSize="16sp"
 				android:textStyle="bold"
-				android:layout_marginTop="16dp"
+				android:layout_marginTop="8dp"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content" />
 
-		<ScrollView
+		<TableLayout
+				android:id="@+id/tableMovimientos"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:fillViewport="true">
+				android:stretchColumns="*"
+				android:layout_marginTop="8dp"
+				android:background="#FAFAFA"
+				android:padding="8dp"
+				android:elevation="1dp">
 
-			<TableLayout
-					android:id="@+id/tableMovimientos"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:stretchColumns="*">
+			<TableRow>
+				<TextView
+						android:text="Fecha"
+						android:padding="8dp"
+						android:textStyle="bold"
+						android:textColor="#000000" />
 
-				<TableRow
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:background="#DDDDDD">
+				<TextView
+						android:text="Ingreso"
+						android:padding="8dp"
+						android:textStyle="bold"
+						android:textColor="#000000" />
 
-					<TextView
-							android:layout_width="0dp"
-							android:layout_height="wrap_content"
-							android:layout_weight="1"
-							android:text="Fecha"
-							android:textStyle="bold"
-							android:gravity="center"
-							android:padding="8dp" />
+				<TextView
+						android:text="Venta"
+						android:padding="8dp"
+						android:textStyle="bold"
+						android:textColor="#000000" />
 
-					<TextView
-							android:layout_width="0dp"
-							android:layout_height="wrap_content"
-							android:layout_weight="1"
-							android:text="Ingreso"
-							android:textStyle="bold"
-							android:gravity="center"
-							android:padding="8dp" />
-
-					<TextView
-							android:layout_width="0dp"
-							android:layout_height="wrap_content"
-							android:layout_weight="1"
-							android:text="Venta"
-							android:textStyle="bold"
-							android:gravity="center"
-							android:padding="8dp" />
-
-					<TextView
-							android:layout_width="0dp"
-							android:layout_height="wrap_content"
-							android:layout_weight="1.5"
-							android:text="Acciones"
-							android:textStyle="bold"
-							android:gravity="center"
-							android:padding="8dp" />
-				</TableRow>
-
-			</TableLayout>
-		</ScrollView>
+				<TextView
+						android:text="Acciones"
+						android:padding="8dp"
+						android:textStyle="bold"
+						android:textColor="#000000" />
+			</TableRow>
+		</TableLayout>
 
 	</LinearLayout>
 </ScrollView>

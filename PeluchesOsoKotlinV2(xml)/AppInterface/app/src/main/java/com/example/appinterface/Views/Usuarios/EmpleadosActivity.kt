@@ -2,7 +2,6 @@ package com.example.appinterface.Views.Usuarios
 
 import Controller.Usuarios.EmpleadosController
 import Models.Usuarios.Empleados
-import Models.Usuarios.Usuario
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.Gravity
@@ -11,7 +10,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.appinterface.R
-import android.util.Log
 
 class EmpleadosActivity : AppCompatActivity() {
     private val empleadosController = EmpleadosController()
@@ -32,16 +30,16 @@ class EmpleadosActivity : AppCompatActivity() {
     }
 
     fun crearEmpleado(v: View) {
-        val dni = findViewById<EditText>(R.id.DniEmpleado).text.toString().toIntOrNull()
-        val telefono = findViewById<EditText>(R.id.TelefonoEmpleado).text.toString().toIntOrNull()
+        val dni = findViewById<EditText>(R.id.DniEmpleado).text.toString().toLongOrNull()
+        val telefono = findViewById<EditText>(R.id.TelefonoEmpleado).text.toString().toLongOrNull()
         val nombre = findViewById<EditText>(R.id.NombreEmpleado).text.toString().trim()
 
-        if (dni == null || telefono == null || nombre.isEmpty()) {
+        if (dni == null || telefono == null) {
             mostrarToast("Complete todos los campos")
             return
         }
 
-        empleadosController.crearEmpleado(dni.toLong(), telefono.toLong(), nombre) { success ->
+        empleadosController.crearEmpleado(dni, telefono, nombre) { success ->
             runOnUiThread {
                 if (success) {
                     mostrarToast("Empleado creado con éxito")
@@ -58,14 +56,8 @@ class EmpleadosActivity : AppCompatActivity() {
         empleadosController.listarEmpleados { empleados ->
             runOnUiThread {
                 if (empleados == null) {
-                    Log.e("LISTAR_EMPLEADOS", "La lista de empleados es null")
                     mostrarToast("Error al cargar empleados")
                     return@runOnUiThread
-                }
-
-                Log.d("LISTAR_EMPLEADOS", "Cantidad de empleados: ${empleados.size}")
-                empleados.forEach { empleado ->
-                    Log.d("LISTAR_EMPLEADOS", "Empleado: $empleado")
                 }
 
                 val table = findViewById<TableLayout>(R.id.tableEmpleados)
@@ -90,7 +82,6 @@ class EmpleadosActivity : AppCompatActivity() {
             layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1.5f)
             gravity = Gravity.CENTER
 
-            // Botón Editar
             ImageButton(context).apply {
                 setImageResource(R.drawable.ic_baseline_edit_24)
                 setOnClickListener { mostrarFormularioEdicion(empleado) }
@@ -98,7 +89,6 @@ class EmpleadosActivity : AppCompatActivity() {
                 addView(this)
             }
 
-            // Botón Eliminar
             ImageButton(context).apply {
                 setImageResource(R.drawable.ic_baseline_delete_24)
                 setOnClickListener { confirmarEliminacion(empleado) }
@@ -106,8 +96,6 @@ class EmpleadosActivity : AppCompatActivity() {
                 addView(this)
             }
 
-
-            // Botón Detalles
             ImageButton(context).apply {
                 setImageResource(R.drawable.ic_baseline_info_24)
                 setOnClickListener { verDetalles(empleado) }
@@ -119,7 +107,7 @@ class EmpleadosActivity : AppCompatActivity() {
 
     private fun mostrarFormularioEdicion(empleado: Empleados) {
         empleadoSeleccionadoId = empleado.id
-        findViewById<ConstraintLayout>(R.id.layoutActualizarEmpleado).visibility = View.VISIBLE
+        findViewById<LinearLayout>(R.id.layoutActualizarEmpleado).visibility = View.VISIBLE
 
         findViewById<EditText>(R.id.editTextNombreEmpleado).setText(empleado.nombreEmpleado)
         findViewById<EditText>(R.id.editTextDniEmpleado).setText(empleado.dniEmpleado.toString())
@@ -132,21 +120,20 @@ class EmpleadosActivity : AppCompatActivity() {
         val nuevoDniStr = findViewById<EditText>(R.id.editTextDniEmpleado).text.toString()
         val nuevoTelefonoStr = findViewById<EditText>(R.id.editTextTelefonoEmpleado).text.toString()
 
-        Log.d("ACTUALIZAR", "Nombre: $nuevoNombre, DNI: $nuevoDniStr, Teléfono: $nuevoTelefonoStr")
-
-        val nuevoDni = nuevoDniStr.toIntOrNull()
-        val nuevoTelefono = nuevoTelefonoStr.toIntOrNull()
+        val nuevoDni = nuevoDniStr.toLongOrNull()
+        val nuevoTelefono = nuevoTelefonoStr.toLongOrNull()
 
         if (nuevoNombre.isEmpty() || nuevoDni == null || nuevoTelefono == null) {
             mostrarToast("Complete todos los campos de actualización")
             return
         }
 
-        empleadosController.actualizarEmpleado(id, nuevoDni.toLong(), nuevoTelefono.toLong(), nuevoNombre) { success ->
+        empleadosController.actualizarEmpleado(id, nuevoDni, nuevoTelefono, nuevoNombre) { success ->
             runOnUiThread {
                 if (success) {
                     mostrarToast("Empleado actualizado correctamente")
-                    findViewById<ConstraintLayout>(R.id.layoutActualizarEmpleado).visibility = View.GONE
+                    findViewById<LinearLayout>(R.id.layoutActualizarEmpleado).visibility = View.GONE
+
                     listarEmpleados(v)
                 } else {
                     mostrarToast("Error al actualizar empleado")
@@ -189,7 +176,6 @@ class EmpleadosActivity : AppCompatActivity() {
             .show()
     }
 
-
     private fun limpiarFormulario() {
         findViewById<EditText>(R.id.DniEmpleado).text.clear()
         findViewById<EditText>(R.id.TelefonoEmpleado).text.clear()
@@ -200,6 +186,3 @@ class EmpleadosActivity : AppCompatActivity() {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
     }
 }
-
-
-

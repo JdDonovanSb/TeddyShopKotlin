@@ -1,22 +1,26 @@
 package Controller.Usuarios
 
 import Models.Usuarios.Empleados
-
 import com.example.appinterface.Api.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.util.Log
 
 class EmpleadosController {
     private val api = RetrofitClient.empleadoService
 
     // Crear un empleado
-    fun crearEmpleado(dniEmpleado: Long, telefonoEmpleado: Long, nombreEmpleado: String, callback: (Boolean) -> Unit) {
+    fun crearEmpleado(
+        dniEmpleado: Long,
+        telefonoEmpleado: Long,
+        nombreEmpleado: String,
+        callback: (Boolean) -> Unit
+    ) {
         val empleado = Empleados(
             dniEmpleado = dniEmpleado,
             telefonoEmpleado = telefonoEmpleado,
-            nombreEmpleado = nombreEmpleado)
+            nombreEmpleado = nombreEmpleado,
+        )
 
         api.crearEmpleado(empleado).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
@@ -35,18 +39,15 @@ class EmpleadosController {
                 if (response.isSuccessful) {
                     callback(response.body())
                 } else {
-                    Log.e("LISTAR_EMPLEADOS", "Error en respuesta: ${response.code()} - ${response.message()}")
                     callback(null)
                 }
             }
 
             override fun onFailure(call: Call<List<Empleados>>, t: Throwable) {
-                Log.e("LISTAR_EMPLEADOS", "Error de red: ${t.message}")
                 callback(null)
             }
         })
     }
-
 
     // Buscar empleado por ID
     fun obtenerEmpleadoPorId(id: String, callback: (Empleados?) -> Unit) {
@@ -62,11 +63,18 @@ class EmpleadosController {
     }
 
     // Actualizar empleado
-    fun actualizarEmpleado(id: String, dniEmpleado: Long, telefonoEmpleado: Long, nombreEmpleado: String, callback: (Boolean) -> Unit) {
+    fun actualizarEmpleado(
+        id: String,
+        dniEmpleado: Long,
+        telefonoEmpleado: Long,
+        nombreEmpleado: String,
+        callback: (Boolean) -> Unit
+    ) {
         val empleado = Empleados(
             dniEmpleado = dniEmpleado,
             telefonoEmpleado = telefonoEmpleado,
-            nombreEmpleado = nombreEmpleado)
+            nombreEmpleado = nombreEmpleado
+        )
 
         api.actualizarEmpleado(id, empleado).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {

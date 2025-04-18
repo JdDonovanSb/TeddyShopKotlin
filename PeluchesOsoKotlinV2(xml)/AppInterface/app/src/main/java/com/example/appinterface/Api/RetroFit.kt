@@ -18,7 +18,7 @@ object RetrofitClient {
     private const val MAGS_URL = "https://vigilant-space-meme-7vvpgv5g5vgwfrw7x-3000.app.github.dev/api/"
     private val retrofit = Retrofit.Builder()
 
-        .baseUrl(MAGS_URL)
+        .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
