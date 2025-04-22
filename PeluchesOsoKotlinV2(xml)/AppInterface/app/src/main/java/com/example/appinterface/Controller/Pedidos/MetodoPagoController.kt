@@ -9,7 +9,7 @@ import retrofit2.Response
 
 class MetodoPagoController {
 
-    private val api = RetrofitClient.MetodoPagoService
+    private val api = RetrofitClient.metodoPagoService
 
     fun listarMetodosPago(callback: (List<MetodoPago>?) -> Unit) {
         api.listarMetodoPago().enqueue(object : Callback<List<MetodoPago>> {
