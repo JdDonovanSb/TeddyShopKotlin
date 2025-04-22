@@ -101,7 +101,9 @@ class DetalleFacturaActivity : AppCompatActivity() {
 
     private fun mostrarFormularioEdicion(detalle: DetalleFactura) {
         detalleSeleccionado = detalle
-        findViewById<ConstraintLayout>(R.id.layoutActualizarDetalle).visibility = View.VISIBLE
+        // Asegúrate de que la vista a la que estás accediendo es del tipo adecuado.
+        val layoutActualizarDetalle = findViewById<LinearLayout>(R.id.layoutActualizarDetalle) // Cambiado a LinearLayout si es necesario
+        layoutActualizarDetalle.visibility = View.VISIBLE
 
         findViewById<EditText>(R.id.editNumDetalle).setText(detalle.numDetalle.toString())
         findViewById<EditText>(R.id.editPrecioDetalle).setText(detalle.precioDetalleFactura.toString())
@@ -128,7 +130,7 @@ class DetalleFacturaActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (success) {
                         mostrarToast("Actualizado correctamente")
-                        findViewById<ConstraintLayout>(R.id.layoutActualizarDetalle).visibility = View.GONE
+                        findViewById<LinearLayout>(R.id.layoutActualizarDetalle).visibility = View.GONE // Cambiado a LinearLayout si es necesario
                         listarDetallesFactura(findViewById(R.id.listarDetallesFactura))
                     } else {
                         mostrarToast("Error al actualizar")
