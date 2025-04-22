@@ -1,4 +1,4 @@
-package com.example.appinterface.Api
+package com.example.appinterface.Api.Usuarios
 
 import Models.Pedidos.Devoluciones
 import Models.Usuarios.Roles
@@ -11,7 +11,7 @@ interface RolesApiService {
     fun listarRoles(): Call<List<Roles>>
 
     @POST("roles")
-    fun crearRoles(@Body roles: Roles): Call<Void>
+    fun crearRoles(@Body roles: Roles): Call<   Void>
 
     @PUT("roles/{id}")
     fun actualizarRoles(@Path("id") id: String, @Body roles: Roles): Call<Void>

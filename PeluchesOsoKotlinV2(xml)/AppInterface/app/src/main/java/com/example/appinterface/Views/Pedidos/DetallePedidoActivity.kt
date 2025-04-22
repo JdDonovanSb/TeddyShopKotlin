@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.appinterface.R
 import android.util.Log
 
@@ -134,7 +133,7 @@ class DetallePedidoActivity : AppCompatActivity() {
     private fun mostrarFormularioEdicion(detalle: DetallePedido) {
         Log.d("UI", "Mostrando formulario de edición para ID=${detalle.id}")
         detalleSeleccionado = detalle
-        findViewById<ConstraintLayout>(R.id.layoutActualizarDetallePedido).visibility = View.VISIBLE
+        findViewById<LinearLayout>(R.id.layoutActualizarDetallePedido).visibility = View.VISIBLE
         findViewById<EditText>(R.id.editTextActualizarDetalleNum).setText(detalle.numDetallePedido.toString())
         findViewById<EditText>(R.id.editTextActualizarPrecio).setText(detalle.precioDetallePedido.toString())
         findViewById<EditText>(R.id.editTextActualizarCantidad).setText(detalle.cantidadDetallePedido.toString())
@@ -160,7 +159,7 @@ class DetallePedidoActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (success) {
                         mostrarToast("Actualizado correctamente")
-                        findViewById<ConstraintLayout>(R.id.layoutActualizarDetallePedido).visibility = View.GONE
+                        findViewById<LinearLayout>(R.id.layoutActualizarDetallePedido).visibility = View.GONE
                         listarDetallesPedido(findViewById(R.id.listarDetallesPedido))
                     } else {
                         mostrarToast("Error al actualizar")

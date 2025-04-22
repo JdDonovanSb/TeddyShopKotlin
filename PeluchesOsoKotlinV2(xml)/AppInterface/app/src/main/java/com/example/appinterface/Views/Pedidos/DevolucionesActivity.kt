@@ -2,8 +2,6 @@ package com.example.appinterface.Views.Pedidos
 
 import Controller.Pedidos.DevolucionesController
 import Models.Pedidos.Devoluciones
-import Models.Productos.Catalogo
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -12,7 +10,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.appinterface.R
-import java.util.*
 
 class DevolucionesActivity : AppCompatActivity() {
     private val devolucionesController = DevolucionesController()
@@ -36,15 +33,14 @@ class DevolucionesActivity : AppCompatActivity() {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
     }
 
-
     fun crearDevolucion(v: View) {
         val detalleDevolucion = findViewById<EditText>(R.id.detalleDevolucion).text.toString()
 
-        if ( detalleDevolucion.isEmpty()) {
+        if (detalleDevolucion.isEmpty()) {
             mostrarToast("Complete todos los campos")
             return
         }
-        devolucionesController.crearDevolucion( detalleDevolucion) { success ->
+        devolucionesController.crearDevolucion(detalleDevolucion) { success ->
             runOnUiThread {
                 if (success) {
                     Toast.makeText(this, "Devolucion creada con exito", Toast.LENGTH_SHORT).show()
@@ -55,16 +51,15 @@ class DevolucionesActivity : AppCompatActivity() {
         }
     }
 
-
     fun listarDevoluciones(v: View) {
         devolucionesController.listarDevoluciones { devoluciones ->
             runOnUiThread {
                 val table = findViewById<TableLayout>(R.id.tableDevoluciones)
                 table.removeViews(1, table.childCount - 1)
-                devoluciones?.forEach { devoluciones ->
+                devoluciones?.forEach { devolucion ->
                     val row = TableRow(this).apply {
-                        addView(createCell(devoluciones.detalleDevolucion))
-                        addView(crearBotonesAccion(devoluciones))
+                        addView(createCell(devolucion.detalleDevolucion))
+                        addView(crearBotonesAccion(devolucion))
                     }
                     table.addView(row)
                 } ?: mostrarToast("Error al cargar devoluciones")
@@ -72,26 +67,17 @@ class DevolucionesActivity : AppCompatActivity() {
         }
     }
 
-
-    // Función para buscar una devolución por ID
-    //fun buscarDevolucionPorId(v: View) {
-    //    val idDevolucion = findViewById<EditText>(R.id.idDevolucionBuscar).text.toString()
-    //    val mensaje = devolucionesController.buscarDevolucionPorId(idDevolucion)
-    //    findViewById<TextView>(R.id.textViewListadoDevoluciones).text = mensaje
-    //}
-
-
     fun actualizarDevolucion(v: View) {
-        devolucionSeleccionada?.let {devoluciones ->
+        devolucionSeleccionada?.let { devolucion ->
             val nuevoDetalleDevolucion = findViewById<EditText>(R.id.editTextDetalle).text.toString()
 
             devolucionesController.actualizarDevolucion(
-                devoluciones.id ?: return,
+                devolucion.id ?: return,
                 nuevoDetalleDevolucion
             ) { success -> runOnUiThread {
                 if(success) {
                     mostrarToast("Actualizado correctamente")
-                    findViewById<ConstraintLayout>(R.id.layoutActualizarDevolucion).visibility = View.GONE
+                    findViewById<LinearLayout>(R.id.layoutActualizarDevolucion).visibility = View.GONE
                     listarDevoluciones(findViewById(R.id.listarDevoluciones))
                 } else {
                     mostrarToast("Error al actualizar")
@@ -99,27 +85,30 @@ class DevolucionesActivity : AppCompatActivity() {
             }}
         }
     }
-    // Función para eliminar una devolución por ID
-    fun confirmarEliminacion(devoluciones: Devoluciones) {
+
+    fun confirmarEliminacion(devolucion: Devoluciones) {
         AlertDialog.Builder(this)
             .setTitle("Eliminar devolución")
             .setMessage("¿Confirmar eliminación?")
-            .setPositiveButton("Eliminar") { _, _ -> devoluciones.id?.let {id ->
-                devolucionesController.eliminarDevolucion(id) { success -> runOnUiThread {
-                    if(success) {
-                        mostrarToast("Eliminado")
-                        listarDevoluciones(findViewById(R.id.listarDevoluciones))
-                    } else {
-                        mostrarToast("Error al eliminar")
+            .setPositiveButton("Eliminar") { _, _ ->
+                devolucion.id?.let { id ->
+                    devolucionesController.eliminarDevolucion(id) { success ->
+                        runOnUiThread {
+                            if(success) {
+                                mostrarToast("Eliminado")
+                                listarDevoluciones(findViewById(R.id.listarDevoluciones))
+                            } else {
+                                mostrarToast("Error al eliminar")
+                            }
+                        }
                     }
-                }}
-            }}
+                }
+            }
             .setNegativeButton("Cancelar", null)
             .show()
     }
 
-
-    private fun crearBotonesAccion(devoluciones: Devoluciones): LinearLayout {
+    private fun crearBotonesAccion(devolucion: Devoluciones): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1.5f)
@@ -128,7 +117,7 @@ class DevolucionesActivity : AppCompatActivity() {
             // Botón Editar
             ImageButton(context).apply {
                 setImageResource(R.drawable.ic_baseline_edit_24)
-                setOnClickListener { mostrarFormularioEdicion(devoluciones)}
+                setOnClickListener { mostrarFormularioEdicion(devolucion) }
                 background = null
                 addView(this)
             }
@@ -136,7 +125,7 @@ class DevolucionesActivity : AppCompatActivity() {
             // Botón Eliminar
             ImageButton(context).apply {
                 setImageResource(R.drawable.ic_baseline_delete_24)
-                setOnClickListener { confirmarEliminacion(devoluciones)}
+                setOnClickListener { confirmarEliminacion(devolucion) }
                 background = null
                 addView(this)
             }
@@ -144,24 +133,24 @@ class DevolucionesActivity : AppCompatActivity() {
             // Botón Detalles
             ImageButton(context).apply {
                 setImageResource(R.drawable.ic_baseline_info_24)
-                setOnClickListener { verDetalles(devoluciones)}
+                setOnClickListener { verDetalles(devolucion) }
                 background = null
                 addView(this)
             }
         }
     }
 
-    private fun mostrarFormularioEdicion(devoluciones: Devoluciones) {
-        devolucionSeleccionada = devoluciones
-        findViewById<ConstraintLayout>(R.id.layoutActualizarDevolucion).visibility = View.VISIBLE
-        findViewById<EditText>(R.id.editTextDetalle).setText(devoluciones.detalleDevolucion)
+    private fun mostrarFormularioEdicion(devolucion: Devoluciones) {
+        devolucionSeleccionada = devolucion
+        findViewById<LinearLayout>(R.id.layoutActualizarDevolucion).visibility = View.VISIBLE
+        findViewById<EditText>(R.id.editTextDetalle).setText(devolucion.detalleDevolucion)
     }
 
-    private fun verDetalles(devoluciones: Devoluciones) {
+    private fun verDetalles(devolucion: Devoluciones) {
         android.app.AlertDialog.Builder(this)
             .setTitle("Detalles de la Devolución")
             .setMessage("""
-             Detalle: ${devoluciones.detalleDevolucion}
+             Detalle: ${devolucion.detalleDevolucion}
          """.trimIndent())
             .setPositiveButton("Cerrar", null)
             .show()

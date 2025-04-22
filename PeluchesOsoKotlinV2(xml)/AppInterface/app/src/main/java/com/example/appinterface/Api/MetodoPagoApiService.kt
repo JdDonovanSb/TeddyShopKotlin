@@ -1,7 +1,12 @@
-package com.example.appinterface.Api
+package com.example.appinterface.Api.Usuarios
 import Models.Pedidos.MetodoPago
-import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.Call;
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface MetodoPagoApiService {
 

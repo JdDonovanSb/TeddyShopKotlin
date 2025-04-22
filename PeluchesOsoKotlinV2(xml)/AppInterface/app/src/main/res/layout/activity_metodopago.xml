@@ -1,127 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-			xmlns:app="http://schemas.android.com/apk/res-auto"
-			xmlns:tools="http://schemas.android.com/tools"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			tools:context=".Views.Pedidos.MetodoPagoActivity">
+			android:padding="16dp"
+			android:background="#F5F5F5">
 
 	<LinearLayout
+			android:orientation="vertical"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:padding="16dp">
+			android:padding="8dp"
+			android:background="@android:color/white"
+			android:elevation="4dp"
+			android:layout_margin="8dp"
+			android:layout_gravity="center"
+			android:clipToPadding="false">
 
-		<!-- Título -->
+		<!-- TÍTULO -->
 		<TextView
-				android:id="@+id/textViewTituloMetodoPago"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="Formulario de Métodos de Pago"
-				android:textSize="18sp"
+				android:text="Gestión de Métodos de Pago"
 				android:textStyle="bold"
-				android:gravity="center"
-				android:layout_marginBottom="16dp" />
+				android:textSize="18sp"
+				android:layout_marginBottom="8dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
 
-		<!-- Campo para crear nuevo método de pago -->
+		<!-- REGISTRO DE METODO DE PAGO -->
+		<TextView
+				android:text="Registrar nuevo método de pago"
+				android:textStyle="bold"
+				android:textSize="16sp"
+				android:textColor="#3700B3"
+				android:layout_marginBottom="8dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
 		<EditText
 				android:id="@+id/nombreMetodoPago"
+				android:hint="Nombre del Método de Pago"
+				android:backgroundTint="#FF6200EE"
+				android:layout_marginBottom="8dp"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:hint="Nombre del método de pago"
-				android:inputType="text"
-				android:minHeight="48dp" />
+				android:layout_height="wrap_content" />
 
-		<!-- Botón Crear -->
 		<Button
-				android:id="@+id/crearMetodoPago"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="Crear Método de Pago"
+				android:id="@+id/btnCrearMetodoPago"
+				android:text="Registrar Método de Pago"
 				android:onClick="crearMetodoPago"
-				android:layout_marginTop="8dp" />
+				android:backgroundTint="#FF6200EE"
+				android:textColor="#FFFFFF"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
 
-		<!-- Botón Listar -->
 		<Button
 				android:id="@+id/ListarMetodoPagos"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
 				android:text="Listar Métodos de Pago"
 				android:onClick="listarMetodosPago"
-				android:layout_marginTop="8dp" />
+				android:backgroundTint="#3700B3"
+				android:textColor="#FFFFFF"
+				android:layout_marginTop="8dp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
 
-		<!-- Sección para actualizar método de pago -->
+		<!-- ACTUALIZAR METODO DE PAGO -->
 		<LinearLayout
 				android:id="@+id/layoutActualizarMetodoPago"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
 				android:orientation="vertical"
 				android:visibility="gone"
 				android:layout_marginTop="16dp"
-				android:background="@android:color/darker_gray"
-				android:padding="12dp">
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="#EEEEEE"
+				android:padding="12dp"
+				android:layout_marginBottom="8dp"
+				android:elevation="2dp">
 
 			<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
 					android:text="Actualizar Método de Pago"
 					android:textStyle="bold"
 					android:textSize="16sp"
-					android:layout_marginBottom="8dp" />
+					android:layout_marginBottom="8dp"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
 
 			<EditText
 					android:id="@+id/editTextNombreMetodoPago"
+					android:hint="Nuevo Nombre"
+					android:backgroundTint="#FF6200EE"
+					android:layout_marginBottom="8dp"
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:hint="Nuevo nombre"
-					android:inputType="text" />
+					android:layout_height="wrap_content" />
 
 			<Button
 					android:id="@+id/btnActualizarMetodoPago"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="Actualizar"
+					android:text="Actualizar Método de Pago"
 					android:onClick="actualizarMetodoPago"
-					android:layout_marginTop="8dp" />
+					android:backgroundTint="#FF6200EE"
+					android:textColor="#FFFFFF"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" />
 		</LinearLayout>
 
-		<!-- Título de la lista -->
+		<!-- LISTADO DE METODOS DE PAGO -->
 		<TextView
-				android:id="@+id/textViewListado"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="Visualización de los métodos de pago"
-				android:textStyle="bold"
+				android:text="Lista de Métodos de Pago"
 				android:textSize="16sp"
-				android:layout_marginTop="24dp"
-				android:gravity="center" />
+				android:textStyle="bold"
+				android:layout_marginTop="8dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
 
-		<!-- Tabla para mostrar resultados -->
 		<TableLayout
 				android:id="@+id/tableMetodosPago"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:stretchColumns="*"
 				android:layout_marginTop="8dp"
-				android:background="#DDDDDD"
-				android:padding="8dp">
+				android:background="#FAFAFA"
+				android:padding="8dp"
+				android:elevation="1dp">
 
 			<TableRow>
 				<TextView
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:layout_weight="1"
 						android:text="Nombre"
+						android:padding="8dp"
 						android:textStyle="bold"
-						android:padding="8dp" />
+						android:textColor="#000000" />
+
 				<TextView
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:layout_weight="1.5"
 						android:text="Acciones"
+						android:padding="8dp"
 						android:textStyle="bold"
-						android:padding="8dp" />
+						android:textColor="#000000" />
 			</TableRow>
+
 		</TableLayout>
 
 	</LinearLayout>

@@ -8,7 +8,6 @@ import android.view.Gravity
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.appinterface.R
 
 class FacturasActivity : AppCompatActivity() {
@@ -18,6 +17,7 @@ class FacturasActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_facturas)
+        listarFacturas(findViewById(R.id.listarFacturas))
     }
 
     private fun createCell(text: String): TextView {
@@ -69,42 +69,41 @@ class FacturasActivity : AppCompatActivity() {
         }
     }
 
-
     private fun crearBotonesAccion(factura: Factura): LinearLayout {
         return LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
             layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1.5f)
 
-            ImageButton(context).apply {
+            val btnEditar = ImageButton(context).apply {
                 setImageResource(R.drawable.ic_baseline_edit_24)
                 setOnClickListener { mostrarFormularioEdicion(factura) }
                 background = null
-                addView(this)
             }
+            addView(btnEditar)
 
-            ImageButton(context).apply {
+            val btnEliminar = ImageButton(context).apply {
                 setImageResource(R.drawable.ic_baseline_delete_24)
                 setOnClickListener { confirmarEliminacion(factura) }
                 background = null
-                addView(this)
             }
+            addView(btnEliminar)
 
-            ImageButton(context).apply {
+            val btnDetalles = ImageButton(context).apply {
                 setImageResource(R.drawable.ic_baseline_info_24)
                 setOnClickListener { verDetalles(factura) }
                 background = null
-                addView(this)
             }
+            addView(btnDetalles)
         }
     }
 
-    private fun mostrarFormularioEdicion( factura: Factura) {
+    private fun mostrarFormularioEdicion(factura: Factura) {
         facturaSeleccionadaId = factura.id
-        findViewById<ConstraintLayout>(R.id.layoutActualizarFactura).visibility = View.VISIBLE
-
+        findViewById<View>(R.id.layoutActualizarFactura).visibility = View.VISIBLE
         findViewById<EditText>(R.id.editTextFechaFactura).setText(factura.fechaCreacionFactura)
-        findViewById<EditText>(R.id.editTextHoraFactura).setText(factura.horaCreacionFactura) }
+        findViewById<EditText>(R.id.editTextHoraFactura).setText(factura.horaCreacionFactura)
+    }
 
     fun actualizarFactura(v: View) {
         facturaSeleccionadaId?.let { id ->
@@ -120,7 +119,7 @@ class FacturasActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (success) {
                         mostrarToast("Factura actualizada correctamente")
-                        findViewById<ConstraintLayout>(R.id.layoutActualizarFactura).visibility = View.GONE
+                        findViewById<View>(R.id.layoutActualizarFactura).visibility = View.GONE
                         listarFacturas(v)
                     } else {
                         mostrarToast("Error al actualizar factura")
@@ -129,7 +128,6 @@ class FacturasActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun confirmarEliminacion(factura: Factura) {
         AlertDialog.Builder(this)
@@ -153,16 +151,10 @@ class FacturasActivity : AppCompatActivity() {
             .show()
     }
 
-
-    private fun verDetalles( factura: Factura) {
+    private fun verDetalles(factura: Factura) {
         AlertDialog.Builder(this)
             .setTitle("Detalles de la Factura")
-            .setMessage(
-                """
-                Fecha: ${factura.fechaCreacionFactura}
-                Hora: ${factura.horaCreacionFactura}
-                """.trimIndent()
-            )
+            .setMessage("Fecha: ${factura.fechaCreacionFactura}\nHora: ${factura.horaCreacionFactura}")
             .setPositiveButton("Cerrar", null)
             .show()
     }
@@ -170,6 +162,9 @@ class FacturasActivity : AppCompatActivity() {
     private fun limpiarFormulario() {
         findViewById<EditText>(R.id.fechaFactura).text.clear()
         findViewById<EditText>(R.id.horaFactura).text.clear()
+        findViewById<EditText>(R.id.editTextFechaFactura).text.clear()
+        findViewById<EditText>(R.id.editTextHoraFactura).text.clear()
+        findViewById<View>(R.id.layoutActualizarFactura).visibility = View.GONE
     }
 
     private fun mostrarToast(mensaje: String) {
