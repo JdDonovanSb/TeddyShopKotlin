@@ -42,6 +42,7 @@ class CategoriaActivity : AppCompatActivity() {
             runOnUiThread {
                 if (success) {
                     mostrarToast("Categoría creada con éxito")
+                    listarCategorias(findViewById(R.id.listarCategorias))
                     limpiarFormulario()
                 } else {
                     mostrarToast("Error al crear categoría")
@@ -102,7 +103,7 @@ class CategoriaActivity : AppCompatActivity() {
 
     private fun mostrarFormularioEdicion(categoria: Categoria) {
         categoriaSeleccionada = categoria
-        findViewById<ConstraintLayout>(R.id.layoutActualizarCategoria).visibility = View.VISIBLE
+        findViewById<LinearLayout>(R.id.layoutActualizarCategoria).visibility = View.VISIBLE
 
         findViewById<EditText>(R.id.editTextNombre).setText(categoria.nombre)
         findViewById<EditText>(R.id.editTextDescripcion).setText(categoria.descripcion)
@@ -122,7 +123,7 @@ class CategoriaActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (success) {
                         mostrarToast("Actualizado correctamente")
-                        findViewById<ConstraintLayout>(R.id.layoutActualizarCategoria).visibility = View.GONE
+                        findViewById<LinearLayout>(R.id.layoutActualizarCategoria).visibility = View.GONE
                         listarCategorias(findViewById(R.id.listarCategorias))
                     } else {
                         mostrarToast("Error al actualizar")
