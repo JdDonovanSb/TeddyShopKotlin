@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.appinterface.R
+import com.example.appinterface.Views.Companias.CompaniaActivity
 
 class MainUsuariosActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,4 +32,8 @@ class MainUsuariosActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun CompañiaMenu (view: View){
+        val intent = Intent(this, CompaniaActivity::class.java)
+        startActivity(intent)
+    }
 }

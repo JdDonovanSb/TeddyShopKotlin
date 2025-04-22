@@ -1,48 +1,280 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:layout_width="match_parent"
-			  android:layout_height="match_parent"
-			  android:orientation="vertical"
-			  android:padding="16dp">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:app="http://schemas.android.com/apk/res-auto"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:padding="16dp"
+			android:background="#F5F5F5">
 
-	<!-- Campos para ingresar datos del pedido -->
-	<EditText android:id="@+id/tamañoOso" android:hint="Tamaño del Oso" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/nombreComprador" android:hint="Nombre del Comprador" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/apellidoComprador" android:hint="Apellido del Comprador" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/numeroComprador" android:hint="Número del Comprador" android:inputType="phone" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/nombreAgendador" android:hint="Nombre del Agendador" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/apellidoAgendador" android:hint="Apellido del Agendador" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/numeroAgendador" android:hint="Número del Agendador" android:inputType="phone" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/localidad" android:hint="Localidad" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/direccion" android:hint="Dirección" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/barrio" android:hint="Barrio" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+	<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="8dp"
+			android:background="@android:color/white"
+			android:elevation="4dp"
+			android:layout_margin="8dp"
+			android:clipToPadding="false">
 
-	<!-- Botones para realizar las acciones -->
-	<Button android:onClick="crearPedido" android:text="Crear Pedido" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<Button android:onClick="listarPedidos" android:text="Listar Pedidos" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+		<!-- Crear Pedido -->
+		<TextView
+				android:text="Crear Pedido"
+				android:textStyle="bold"
+				android:textSize="18sp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:layout_marginTop="8dp"/>
 
-	<!-- Campos para buscar, actualizar y eliminar un pedido -->
-	<EditText android:id="@+id/idPedidoBuscar" android:hint="ID del Pedido a Buscar" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<Button android:onClick="buscarPedidoPorId" android:text="Buscar Pedido" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+		<EditText
+				android:id="@+id/nombreComprador"
+				android:hint="Nombre Comprador"
+				android:inputType="textPersonName"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:backgroundTint="#FF6200EE"/>
 
-	<!-- Aquí agregamos los campos de actualización -->
-	<EditText android:id="@+id/idPedidoActualizar" android:hint="ID" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/nuevoTamañoOso" android:hint="Nuevo Tamaño del Oso" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/nuevoNombreComprador" android:hint="Nuevo Nombre del Comprador" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/nuevoApellidoComprador" android:hint="Nuevo Apellido del Comprador" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/nuevoNumeroComprador" android:hint="Nuevo Número del Comprador" android:inputType="phone" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/nuevoNombreAgendador" android:hint="Nuevo Nombre del Agendador" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/nuevoApellidoAgendador" android:hint="Nuevo Apellido del Agendador" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/nuevoNumeroAgendador" android:hint="Nuevo Número del Agendador" android:inputType="phone" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/nuevaLocalidad" android:hint="Nueva Localidad" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/nuevaDireccion" android:hint="Nueva Dirección" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<EditText android:id="@+id/nuevoBarrio" android:hint="Nuevo Barrio" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+		<EditText
+				android:id="@+id/numeroComprador"
+				android:hint="Número Comprador"
+				android:inputType="phone"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:backgroundTint="#FF6200EE"/>
 
-	<Button android:onClick="actualizarPedido" android:text="Actualizar Pedido" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+		<EditText
+				android:id="@+id/nombreAgendador"
+				android:hint="Nombre Agendador"
+				android:inputType="textPersonName"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:backgroundTint="#FF6200EE"/>
 
-	<EditText android:id="@+id/idPedidoEliminar" android:hint="ID del Pedido a Eliminar" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-	<Button android:onClick="eliminarPedido" android:text="Eliminar Pedido" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+		<EditText
+				android:id="@+id/numeroAgendador"
+				android:hint="Número Agendador"
+				android:inputType="phone"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:backgroundTint="#FF6200EE"/>
 
-	<!-- TextView para mostrar los resultados -->
-	<TextView android:id="@+id/textViewListadoPedidos" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Resultados de los pedidos aparecerán aquí"/>
-</LinearLayout>
+		<EditText
+				android:id="@+id/localidad"
+				android:hint="Localidad"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:backgroundTint="#FF6200EE"/>
+
+		<EditText
+				android:id="@+id/direccion"
+				android:hint="Dirección"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:backgroundTint="#FF6200EE"/>
+
+		<EditText
+				android:id="@+id/barrio"
+				android:hint="Barrio"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="12dp"
+				android:backgroundTint="#FF6200EE"/>
+
+		<Button
+				android:id="@+id/btnCrearPedido"
+				android:text="Crear Pedido"
+				android:onClick="CrearPedido"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="8dp"
+				android:backgroundTint="#FF3700B3"
+				android:textColor="#FFFFFF"/>
+
+		<Button
+				android:id="@+id/ListarPedidos"
+				android:text="Listar Pedidos"
+				android:onClick="ListarPedidos"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				android:backgroundTint="#FF3700B3"
+				android:textColor="#FFFFFF"/>
+
+		<!-- Tabla para mostrar los pedidos -->
+		<TextView
+				android:text="Listado de Pedidos"
+				android:textStyle="bold"
+				android:textSize="16sp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:layout_marginBottom="8dp"/>
+
+		<TableLayout
+				android:id="@+id/tablePedidos"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:stretchColumns="*"
+				android:layout_marginTop="8dp"
+				android:background="#FAFAFA"
+				android:padding="8dp"
+				android:elevation="1dp">
+
+			<!-- Encabezados -->
+			<TableRow>
+				<TextView
+						android:text="Nombre Comprador"
+						android:padding="8dp"
+						android:textStyle="bold"
+						android:textColor="#000000" />
+
+				<TextView
+						android:text="Dirección"
+						android:padding="8dp"
+						android:textStyle="bold"
+						android:textColor="#000000" />
+
+				<TextView
+						android:text="Acciones"
+						android:padding="8dp"
+						android:textStyle="bold"
+						android:textColor="#000000" />
+			</TableRow>
+
+			<!-- Aquí se agregan las filas dinámicamente -->
+
+		</TableLayout>
+
+		<!-- Formulario para actualizar Pedido -->
+		<androidx.constraintlayout.widget.ConstraintLayout
+				android:id="@+id/layoutActualizarPedido"
+				android:visibility="gone"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:background="#EEEEEE"
+				android:padding="12dp"
+				android:elevation="2dp">
+
+			<!-- Título -->
+			<TextView
+					android:id="@+id/actualizarTitulo"
+					android:text="Actualizar Pedido"
+					android:textStyle="bold"
+					android:textSize="16sp"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="8dp"
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"/>
+
+			<!-- EditText para el nuevo Nombre Comprador -->
+			<EditText
+					android:id="@+id/nuevoNombreComprador"
+					android:hint="Nuevo Nombre Comprador"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="8dp"
+					android:backgroundTint="#FF6200EE"
+					app:layout_constraintTop_toBottomOf="@id/actualizarTitulo"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"/>
+
+			<!-- EditText para el nuevo Número Comprador -->
+			<EditText
+					android:id="@+id/nuevoNumeroComprador"
+					android:hint="Nuevo Número Comprador"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="8dp"
+					android:backgroundTint="#FF6200EE"
+					app:layout_constraintTop_toBottomOf="@id/nuevoNombreComprador"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"/>
+
+			<!-- EditText para el nuevo Nombre Agendador -->
+			<EditText
+					android:id="@+id/nuevoNombreAgendador"
+					android:hint="Nuevo Nombre Agendador"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="8dp"
+					android:backgroundTint="#FF6200EE"
+					app:layout_constraintTop_toBottomOf="@id/nuevoNumeroComprador"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"/>
+
+			<!-- EditText para el nuevo Número Agendador -->
+			<EditText
+					android:id="@+id/nuevoNumeroAgendador"
+					android:hint="Nuevo Número Agendador"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="8dp"
+					android:backgroundTint="#FF6200EE"
+					app:layout_constraintTop_toBottomOf="@id/nuevoNombreAgendador"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"/>
+
+			<!-- EditText para la nueva Localidad -->
+			<EditText
+					android:id="@+id/nuevaLocalidad"
+					android:hint="Nueva Localidad"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="8dp"
+					android:backgroundTint="#FF6200EE"
+					app:layout_constraintTop_toBottomOf="@id/nuevoNumeroAgendador"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"/>
+
+			<!-- EditText para la nueva Dirección -->
+			<EditText
+					android:id="@+id/nuevaDireccion"
+					android:hint="Nueva Dirección"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="8dp"
+					android:backgroundTint="#FF6200EE"
+					app:layout_constraintTop_toBottomOf="@id/nuevaLocalidad"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"/>
+
+			<!-- EditText para el nuevo Barrio -->
+			<EditText
+					android:id="@+id/nuevoBarrio"
+					android:hint="Nuevo Barrio"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="12dp"
+					android:backgroundTint="#FF6200EE"
+					app:layout_constraintTop_toBottomOf="@id/nuevaDireccion"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"/>
+
+			<!-- Botón para actualizar el pedido -->
+			<Button
+					android:id="@+id/btnActualizarPedido"
+					android:text="Actualizar Pedido"
+					android:onClick="ActualizarPedido"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="#FFFFFF"
+					android:layout_marginTop="8dp"
+					android:backgroundTint="#FF3700B3"
+					app:layout_constraintTop_toBottomOf="@id/nuevoBarrio"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"/>
+
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+	</LinearLayout>
+</ScrollView>

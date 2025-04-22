@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-			android:id="@+id/scrollCategoria"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:padding="16dp"
 			android:background="#F5F5F5">
 
 	<LinearLayout
+			android:orientation="vertical"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
 			android:padding="8dp"
 			android:background="@android:color/white"
 			android:elevation="4dp"
 			android:layout_margin="8dp"
 			android:clipToPadding="false">
 
-		<!-- Crear Categoría -->
+		<!-- Crear Compañía -->
 		<TextView
-				android:text="Crear Categoría"
+				android:text="Crear Compañía"
 				android:textStyle="bold"
 				android:textSize="18sp"
 				android:layout_marginBottom="8dp"
@@ -26,7 +25,25 @@
 				android:layout_height="wrap_content" />
 
 		<EditText
-				android:id="@+id/nombreCategoria"
+				android:id="@+id/NITCompania"
+				android:hint="NIT"
+				android:inputType="number"
+				android:backgroundTint="#FF6200EE"
+				android:layout_marginBottom="8dp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
+
+		<EditText
+				android:id="@+id/telefonoCompania"
+				android:hint="Teléfono"
+				android:inputType="phone"
+				android:backgroundTint="#FF6200EE"
+				android:layout_marginBottom="8dp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
+
+		<EditText
+				android:id="@+id/nombreCompania"
 				android:hint="Nombre"
 				android:backgroundTint="#FF6200EE"
 				android:layout_marginBottom="8dp"
@@ -34,35 +51,35 @@
 				android:layout_height="wrap_content" />
 
 		<EditText
-				android:id="@+id/descripcionCategoria"
-				android:hint="Descripción"
+				android:id="@+id/direccionCompania"
+				android:hint="Dirección"
 				android:backgroundTint="#FF6200EE"
 				android:layout_marginBottom="12dp"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content" />
 
 		<Button
-				android:id="@+id/crearCategoria"
-				android:text="Crear Categoría"
-				android:onClick="crearCategoria"
+				android:id="@+id/crearCompania"
+				android:text="Crear Compañía"
+				android:onClick="crearCompania"
 				android:backgroundTint="#FF6200EE"
 				android:textColor="#FFFFFF"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content" />
 
 		<Button
-				android:id="@+id/listarCategorias"
-				android:text="Listar Categorías"
-				android:onClick="listarCategorias"
+				android:id="@+id/listarCompanias"
+				android:text="Listar Compañías"
+				android:onClick="listarCompanias"
 				android:backgroundTint="#FF3700B3"
 				android:textColor="#FFFFFF"
 				android:layout_marginTop="8dp"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content" />
 
-		<!-- Actualizar Categoría -->
+		<!-- Actualizar Compañía -->
 		<LinearLayout
-				android:id="@+id/layoutActualizarCategoria"
+				android:id="@+id/layoutActualizarCompania"
 				android:orientation="vertical"
 				android:visibility="gone"
 				android:layout_marginTop="16dp"
@@ -74,7 +91,7 @@
 				android:elevation="2dp">
 
 			<TextView
-					android:text="Actualizar Categoría"
+					android:text="Actualizar Compañía"
 					android:textStyle="bold"
 					android:textSize="16sp"
 					android:layout_marginBottom="8dp"
@@ -90,35 +107,44 @@
 					android:layout_height="wrap_content" />
 
 			<EditText
-					android:id="@+id/editTextDescripcion"
-					android:hint="Nueva Descripción"
+					android:id="@+id/editTextTelefono"
+					android:hint="Nuevo Teléfono"
+					android:inputType="phone"
+					android:backgroundTint="#FF6200EE"
+					android:layout_marginBottom="8dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" />
+
+			<EditText
+					android:id="@+id/editTextDireccion"
+					android:hint="Nueva Dirección"
 					android:backgroundTint="#FF6200EE"
 					android:layout_marginBottom="8dp"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />
 
 			<Button
-					android:id="@+id/btnActualizarCategoria"
+					android:id="@+id/btnActualizarCompania"
 					android:text="Actualizar"
-					android:onClick="actualizarCategoria"
+					android:onClick="actualizarCompania"
 					android:backgroundTint="#FF6200EE"
 					android:textColor="#FFFFFF"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />
 
 			<Button
-					android:id="@+id/btnCancelarActualizarCategoria"
+					android:id="@+id/btnCancelarActualizar"
 					android:text="Cancelar"
+					android:layout_marginTop="4dp"
 					android:backgroundTint="#AAAAAA"
 					android:textColor="#FFFFFF"
-					android:layout_marginTop="4dp"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />
 		</LinearLayout>
 
-		<!-- Tabla de Categorías -->
+		<!-- Tabla de Compañías -->
 		<TextView
-				android:text="Listado de Categorías"
+				android:text="Listado de Compañías"
 				android:textSize="16sp"
 				android:textStyle="bold"
 				android:layout_marginTop="8dp"
@@ -126,7 +152,7 @@
 				android:layout_height="wrap_content" />
 
 		<TableLayout
-				android:id="@+id/tableCategorias"
+				android:id="@+id/tableCompanias"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:stretchColumns="*"
@@ -143,7 +169,7 @@
 						android:textColor="#000000" />
 
 				<TextView
-						android:text="Descripción"
+						android:text="Teléfono"
 						android:padding="8dp"
 						android:textStyle="bold"
 						android:textColor="#000000" />
