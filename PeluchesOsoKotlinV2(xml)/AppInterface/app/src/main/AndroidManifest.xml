@@ -31,6 +31,7 @@
 		<activity android:name=".Views.Productos.MovimientoActivity"/>
 		<activity android:name=".Views.Pedidos.MainPedidoActivity"/>
 		<activity android:name=".Views.Pedidos.PedidoActivity"/>
+		<activity android:name=".Views.Companias.CompaniaActivity"/>
 		<activity android:name=".Views.Pedidos.DetallePedidoActivity"/>|
 		<activity android:name=".Views.Pedidos.MetodoPagoActivity"/>
 		<activity android:name=".Views.Pedidos.DevolucionesActivity"/>
