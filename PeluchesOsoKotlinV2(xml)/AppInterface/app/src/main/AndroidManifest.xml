@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 		  xmlns:tools="http://schemas.android.com/tools">
 	<uses-permission android:name="android.permission.INTERNET"/>
@@ -13,15 +12,21 @@
 			android:supportsRtl="true"
 			android:theme="@style/Theme.AppInterface"
 			tools:targetApi="31">
+
+		<!-- Actividad principal (Login) -->
 		<activity
-				android:name=".MainActivity"
+				android:name=".Views.LoginActivity"
 				android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
-
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
+
+		<!-- Actividad principal antigua (ahora secundaria) -->
+		<activity android:name=".MainActivity"/>
+
+		<!-- Actividades de Productos -->
 		<activity android:name=".Views.Productos.MainProductosActivity"/>
 		<activity android:name=".Views.Productos.CatalogoActivity"/>
 		<activity android:name=".Views.Productos.CategoriaActivity"/>
@@ -29,21 +34,29 @@
 		<activity android:name=".Views.Productos.InventarioActivity"/>
 		<activity android:name=".Views.Productos.ProductoActivity"/>
 		<activity android:name=".Views.Productos.MovimientoActivity"/>
+
+		<!-- Actividades de Pedidos -->
 		<activity android:name=".Views.Pedidos.MainPedidoActivity"/>
 		<activity android:name=".Views.Pedidos.PedidoActivity"/>
-		<activity android:name=".Views.Companias.CompaniaActivity"/>
-		<activity android:name=".Views.Pedidos.DetallePedidoActivity"/>|
+		<activity android:name=".Views.Pedidos.DetallePedidoActivity"/>
 		<activity android:name=".Views.Pedidos.MetodoPagoActivity"/>
 		<activity android:name=".Views.Pedidos.DevolucionesActivity"/>
-		<activity android:name=".Views.Pedidos.FacturasActivity"/>|
-		<activity android:name=".Views.Pedidos.DetalleFacturaActivity"/>|
+		<activity android:name=".Views.Pedidos.FacturasActivity"/>
+		<activity android:name=".Views.Pedidos.DetalleFacturaActivity"/>
+
+		<!-- Actividades de Usuarios -->
 		<activity android:name=".Views.Usuarios.MainUsuariosActivity"/>
 		<activity android:name=".Views.Usuarios.RolesActivity"/>
 		<activity android:name=".Views.Usuarios.ClientesActivity"/>
 		<activity android:name=".Views.Usuarios.UsuarioActivity"/>
 		<activity android:name=".Views.Usuarios.EmpleadosActivity"/>
+
+		<!-- Actividades de roles -->
 		<activity android:name=".Views.AdministradorActivity"/>
 		<activity android:name=".Views.EmpleadoActivity"/>
+
+		<activity android:name=".Views.Companias.CompaniaActivity"/>
+
 	</application>
 
 </manifest>

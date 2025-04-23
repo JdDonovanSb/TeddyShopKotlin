@@ -1,5 +1,8 @@
 package com.example.appinterface.Api
-
+import com.example.appinterface.Api.Usuarios.*
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import java.util.concurrent.TimeUnit
 import com.example.appinterface.Api.Pedidos.DetalleFacturaApiService
 import com.example.appinterface.Api.Pedidos.DetallePedidoApiService
 import com.example.appinterface.Api.Pedidos.FacturaApiService
@@ -11,14 +14,41 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.example.appinterface.Api.Pedidos.DevolucionesApiService
 import com.example.appinterface.Api.*
+import com.example.appinterface.Api.Productos.HistorialPrecioApiService
+import com.example.appinterface.Api.Productos.ProductoApiService
 import com.example.appinterface.Api.Usuarios.*
 
 object RetrofitClient {
     private const val BASE_URL = "http://10.0.2.2:3000/api/"
+    private const val SPRING_BASE_URL = "http://10.0.2.2:8080/"
     private const val MAGS_URL = "https://vigilant-space-meme-7vvpgv5g5vgwfrw7x-3000.app.github.dev/api/"
+
+    // Configuración del interceptor para logging
+    private val loggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    // Configuración del cliente HTTP
+    private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
+        .build()
+
+
+
+
     private val retrofit = Retrofit.Builder()
 
         .baseUrl(BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+
+    private val retrofitSpring = Retrofit.Builder()
+        .baseUrl(SPRING_BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -34,7 +64,7 @@ object RetrofitClient {
     val movimientoService: MovimientoApiService
         get() =retrofit.create(MovimientoApiService::class.java)
 
-    val MetodoPagoService: MetodoPagoApiService
+    val metodoPagoService: MetodoPagoApiService
         get() =retrofit.create(MetodoPagoApiService::class.java)
 
     val usuarioService: UsuarioApiService
@@ -50,13 +80,29 @@ object RetrofitClient {
         get() = retrofit.create(DevolucionesApiService::class.java)
 
     val rolesService: RolesApiService
-        get() = retrofit.create(RolesApiService::class.java)
+        get() = retrofitSpring.create(RolesApiService::class.java)
 
     val facturaService: FacturaApiService
         get() = retrofit.create(FacturaApiService::class.java)
 
     val detallePedidoService: DetallePedidoApiService
         get() = retrofit.create(DetallePedidoApiService::class.java)
+
+    val companiaService: CompaniaApiService
+        get() =retrofit.create(CompaniaApiService::class.java)
+
+    val pedidoService: PedidoApiService
+        get() = retrofit.create(PedidoApiService::class.java)
+
+
+    val historialPrecioService: HistorialPrecioApiService
+        get() = retrofit.create(HistorialPrecioApiService::class.java)
+
+    val productoService: ProductoApiService
+        get() = retrofit.create(ProductoApiService::class.java)
+
+    val authService: LoginApiService
+        get() = retrofit.create(LoginApiService::class.java)
 }
 
 
