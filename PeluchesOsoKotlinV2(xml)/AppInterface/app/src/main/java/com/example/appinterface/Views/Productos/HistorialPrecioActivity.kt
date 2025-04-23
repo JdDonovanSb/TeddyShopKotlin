@@ -128,7 +128,7 @@ class HistorialPrecioActivity : AppCompatActivity() {
 
     private fun mostrarFormularioEdicion(historial: HistorialPrecio) {
         historialSeleccionado = historial
-        findViewById<ConstraintLayout>(R.id.layoutActualizarHistorial).visibility = View.VISIBLE
+        findViewById<LinearLayout>(R.id.layoutActualizarHistorial).visibility = View.VISIBLE
 
         findViewById<EditText>(R.id.editTextPrecio).setText(historial.precio.toString())
         val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -175,7 +175,7 @@ class HistorialPrecioActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (success) {
                         mostrarToast("Actualizado correctamente")
-                        findViewById<ConstraintLayout>(R.id.layoutActualizarHistorial).visibility = View.GONE
+                        findViewById<LinearLayout>(R.id.layoutActualizarHistorial).visibility = View.GONE
                         listarHistorial(findViewById(R.id.listarHistorial))
                     } else {
                         mostrarToast("Error al actualizar")

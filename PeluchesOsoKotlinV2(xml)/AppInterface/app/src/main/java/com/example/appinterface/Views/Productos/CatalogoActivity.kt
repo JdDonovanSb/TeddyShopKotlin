@@ -105,7 +105,7 @@ class CatalogoActivity : AppCompatActivity() {
 
     private fun mostrarFormularioEdicion(catalogo: Catalogo) {
         catalogoSeleccionado = catalogo
-        findViewById<ConstraintLayout>(R.id.layoutActualizarCatalogo).visibility = View.VISIBLE
+        findViewById<LinearLayout>(R.id.layoutActualizarCatalogo).visibility = View.VISIBLE
 
         findViewById<EditText>(R.id.editTextNombre).setText(catalogo.nombreCatalogo)
         findViewById<EditText>(R.id.editTextDescripcion).setText(catalogo.descripcionCatalogo)
@@ -130,7 +130,7 @@ class CatalogoActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (success) {
                         mostrarToast("Actualizado correctamente")
-                        findViewById<ConstraintLayout>(R.id.layoutActualizarCatalogo).visibility = View.GONE
+                        findViewById<LinearLayout>(R.id.layoutActualizarCatalogo).visibility = View.GONE
                         listarCatalogos(findViewById(R.id.listarCatalogos))
                     } else {
                         mostrarToast("Error al actualizar")

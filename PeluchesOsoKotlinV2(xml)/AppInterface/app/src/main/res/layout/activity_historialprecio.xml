@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:tools="http://schemas.android.com/tools"
-		xmlns:app="http://schemas.android.com/apk/res-auto"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		tools:context=".Views.Productos.HistorialPrecioActivity">
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:padding="16dp"
+			android:background="#F5F5F5"
+			tools:context=".Views.Productos.HistorialPrecioActivity">
 
 	<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
-			android:padding="16dp">
+			android:padding="8dp"
+			android:background="@android:color/white"
+			android:elevation="4dp"
+			android:layout_margin="8dp">
 
 		<!-- Título -->
 		<TextView
@@ -20,150 +22,192 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="Gestión de Historial de Precios"
-				android:textAppearance="?android:attr/textAppearanceLarge"
-				android:layout_gravity="center_horizontal"
-				android:paddingBottom="16dp"/>
+				android:textSize="18sp"
+				android:textStyle="bold"
+				android:layout_marginBottom="8dp"/>
 
 		<!-- Formulario de creación -->
+		<TextView
+				android:text="Registrar nuevo historial"
+				android:textStyle="bold"
+				android:textSize="16sp"
+				android:textColor="#3700B3"
+				android:layout_marginBottom="8dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
 		<EditText
 				android:id="@+id/precio"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="Precio" />
+				android:hint="Precio"
+				android:backgroundTint="#FF6200EE"
+				android:layout_marginBottom="8dp"/>
 
 		<EditText
 				android:id="@+id/fechaInicio"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="Fecha Inicio" />
+				android:hint="Fecha Inicio"
+				android:backgroundTint="#FF6200EE"
+				android:layout_marginBottom="8dp"/>
 
 		<EditText
 				android:id="@+id/fechaFin"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="Fecha Fin" />
+				android:hint="Fecha Fin"
+				android:backgroundTint="#FF6200EE"
+				android:layout_marginBottom="8dp"/>
 
-		<Switch
-				android:id="@+id/estadoPrecio"
-				android:layout_width="wrap_content"
+		<LinearLayout
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="Estado" />
+				android:orientation="horizontal"
+				android:layout_marginBottom="8dp">
+			<Switch
+					android:id="@+id/estadoPrecio"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Estado"
+					android:textSize="14sp"
+					android:layout_marginEnd="8dp"/>
+		</LinearLayout>
 
 		<Button
 				android:id="@+id/crearHistorial"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:onClick="crearHistorial"
-				android:text="Crear Historial" />
+				android:text="Crear Historial"
+				android:backgroundTint="#FF6200EE"
+				android:textColor="#FFFFFF"/>
 
 		<Button
 				android:id="@+id/listarHistorial"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:onClick="listarHistorial"
-				android:text="Listar Historial" />
+				android:text="Listar Historial"
+				android:backgroundTint="#3700B3"
+				android:textColor="#FFFFFF"
+				android:layout_marginTop="8dp"/>
+		<!-- Layout de actualización -->
+		<LinearLayout
+				android:id="@+id/layoutActualizarHistorial"
+				android:orientation="vertical"
+				android:visibility="gone"
+				android:layout_marginTop="16dp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="#EEEEEE"
+				android:padding="12dp"
+				android:elevation="2dp">
 
-		<!-- Tabla -->
+			<TextView
+					android:text="Actualizar Historial"
+					android:textStyle="bold"
+					android:textSize="16sp"
+					android:layout_marginBottom="8dp"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+
+			<EditText
+					android:id="@+id/editTextPrecio"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="Nuevo Precio"
+					android:backgroundTint="#FF6200EE"
+					android:layout_marginBottom="8dp"/>
+
+			<EditText
+					android:id="@+id/editTextFechaInicio"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="Nueva Fecha Inicio"
+					android:backgroundTint="#FF6200EE"
+					android:layout_marginBottom="8dp"/>
+
+			<EditText
+					android:id="@+id/editTextFechaFin"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="Nueva Fecha Fin"
+					android:backgroundTint="#FF6200EE"
+					android:layout_marginBottom="8dp"/>
+
+			<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:layout_marginBottom="8dp">
+				<Switch
+						android:id="@+id/switchEstadoPrecio"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Nuevo Estado"
+						android:textSize="14sp"/>
+			</LinearLayout>
+
+			<Button
+					android:id="@+id/btnActualizarHistorial"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="Actualizar"
+					android:onClick="actualizarHistorial"
+					android:backgroundTint="#FF6200EE"
+					android:textColor="#FFFFFF"/>
+		</LinearLayout>
+		<!-- Listado de Historial -->
+		<TextView
+				android:text="Lista de Historial de Precios"
+				android:textSize="16sp"
+				android:textStyle="bold"
+				android:layout_marginTop="16dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
 		<HorizontalScrollView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:paddingTop="16dp">
+				android:layout_marginTop="8dp">
 
 			<TableLayout
 					android:id="@+id/tableHistorial"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:stretchColumns="*"
-					android:shrinkColumns="*">
+					android:background="#FAFAFA"
+					android:padding="8dp"
+					android:elevation="1dp">
 
 				<!-- Encabezado -->
 				<TableRow>
 					<TextView
 							android:text="Precio"
 							android:textStyle="bold"
-							android:padding="8dp"/>
+							android:padding="8dp"
+							android:textColor="#000000"/>
 					<TextView
 							android:text="Inicio"
 							android:textStyle="bold"
-							android:padding="8dp"/>
+							android:padding="8dp"
+							android:textColor="#000000"/>
 					<TextView
 							android:text="Estado"
 							android:textStyle="bold"
-							android:padding="8dp"/>
+							android:padding="8dp"
+							android:textColor="#000000"/>
 					<TextView
 							android:text="Acciones"
 							android:textStyle="bold"
-							android:padding="8dp"/>
+							android:padding="8dp"
+							android:textColor="#000000"/>
 				</TableRow>
 			</TableLayout>
 		</HorizontalScrollView>
 
-		<!-- Layout de actualización (oculto) -->
-		<androidx.constraintlayout.widget.ConstraintLayout
-				android:id="@+id/layoutActualizarHistorial"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:visibility="gone"
-				android:layout_marginTop="24dp">
 
-			<TextView
-					android:id="@+id/tituloActualizar"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:text="Actualizar Historial"
-					android:textStyle="bold"
-					android:textSize="18sp"
-					app:layout_constraintTop_toTopOf="parent"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintEnd_toEndOf="parent"
-					android:layout_marginBottom="8dp"/>
-
-			<EditText
-					android:id="@+id/editTextPrecio"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:hint="Nuevo Precio"
-					app:layout_constraintTop_toBottomOf="@+id/tituloActualizar"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintEnd_toEndOf="parent"/>
-
-			<EditText
-					android:id="@+id/editTextFechaInicio"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:hint="Nueva Fecha Inicio"
-					app:layout_constraintTop_toBottomOf="@id/editTextPrecio"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintEnd_toEndOf="parent"/>
-
-			<EditText
-					android:id="@+id/editTextFechaFin"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:hint="Nueva Fecha Fin"
-					app:layout_constraintTop_toBottomOf="@id/editTextFechaInicio"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintEnd_toEndOf="parent"/>
-
-			<Switch
-					android:id="@+id/switchEstadoPrecio"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Nuevo Estado"
-					app:layout_constraintTop_toBottomOf="@id/editTextFechaFin"
-					app:layout_constraintStart_toStartOf="parent"/>
-
-			<Button
-					android:id="@+id/btnActualizarHistorial"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Actualizar"
-					android:onClick="actualizarHistorial"
-					app:layout_constraintTop_toBottomOf="@id/switchEstadoPrecio"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintEnd_toEndOf="parent"
-					android:layout_marginTop="8dp"/>
-		</androidx.constraintlayout.widget.ConstraintLayout>
 
 	</LinearLayout>
 </ScrollView>
